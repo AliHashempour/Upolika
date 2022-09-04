@@ -77,3 +77,15 @@ class MongoWrapper(BaseMongoWrapper):
         doc = {"$set": doc}
         res = collection.update_one(query, doc)
         return res
+
+    def upsert(self, table_name, query: dict, doc: dict):
+        collection = self.get_collection(table_name)
+        res = collection.update_one(query, {"$set": doc}, upsert=True)
+        return res
+
+    def exists(self, table_name, query: dict):
+        collection = self.get_collection(table_name)
+        res = collection.find_one(query)
+        if res is None:
+            return False
+        return True
