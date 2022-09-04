@@ -6,7 +6,7 @@ class DBConfig:
         """config of database such as host name , port and etc"""
 
 
-class BaseWrapper:
+class BaseMongoWrapper:
     def __init__(self):
         """config of database """
 

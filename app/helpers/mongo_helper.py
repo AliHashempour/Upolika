@@ -3,7 +3,7 @@ from abc import abstractmethod
 
 from pymongo import MongoClient
 
-from app.helpers.base_helpers import DBConfig, BaseWrapper
+from app.helpers.base_helpers import DBConfig, BaseMongoWrapper
 from app.helpers.config_helper import ConfigHelper
 
 
@@ -18,7 +18,7 @@ class MongoConfig(DBConfig):
         self.database_name = self.cfg_helper.get("MONGODB", "database_name")
 
 
-class MongoWrapper(BaseWrapper):
+class MongoWrapper(BaseMongoWrapper):
     def __init__(self):
         super(MongoWrapper, self).__init__()
         self.conf = MongoConfig()
