@@ -5,39 +5,42 @@ import pika
 
 class RpcClient(object):
 
-    def __init__(self, rabbit_server_host, server_queue_name, virtual_host, port, username=None, password=None):
-        self.server_queue = server_queue_name
+    def __init__(self, rabbit_server_host, queue_name, virtual_host, port, username=None, password=None):
+        self.server_queue = queue_name
 
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host=rabbit_server_host, port=port, virtual_host=virtual_host))
+            pika.ConnectionParameters(host=rabbit_server_host, port=port))
 
         self.channel = self.connection.channel()
-        self.response = None
-        self.corr_id = None
-        result = self.channel.queue_declare(queue='', durable=False, auto_delete=True)
+
+        result = self.channel.queue_declare(queue='', durable=False, auto_delete=True, exclusive=True)
         self.callback_queue = result.method.queue
 
-        self.channel.basic_consume(self.callback_queue, self.on_response, True)
+        self.channel.basic_consume(
+            self.callback_queue,
+            self.on_response,
+            auto_ack=True)
+
+        self.response = None
+        self.corr_id = None
 
     def on_response(self, ch, method, props, body):
         if self.corr_id == props.correlation_id:
             self.response = body
             # print("received reply: ", body)
 
-    def call(self, body, delivery_mode=1):
+    def call(self, body):
         self.corr_id = str(uuid.uuid4())
         self.channel.basic_publish(
             exchange='',
             routing_key=self.server_queue,
             properties=pika.BasicProperties(
                 reply_to=self.callback_queue,
-                correlation_id=self.corr_id,
-                delivery_mode=delivery_mode,
-            ),
+                correlation_id=self.corr_id),
             body=body)
 
         while self.response is None:
-            self.connection.process_data_events()
+            self.connection.process_data_events(time_limit=0)
 
         self.channel.queue_delete(self.callback_queue)
         self.connection.close()
