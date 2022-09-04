@@ -1,5 +1,6 @@
 from flask import Flask, request
 from flask_cors import CORS
+import app.api.utils as utils
 
 app = Flask(__name__)
 CORS(app)
@@ -50,4 +51,18 @@ def delete_request():
         "error_description": None,
         "data": None,
         "request": request.json
+    }
+
+
+@app.route('/api/v1/sign_up', methods=['post'])
+def sign_up():
+    request_body = request.json
+    data = request_body['data']
+    res = utils.index_user(data=data)
+    return {
+        "is_successful": True,
+        "error_code": 0,
+        "error_description": None,
+        "data": None,
+        "response": res
     }
