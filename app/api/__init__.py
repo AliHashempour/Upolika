@@ -10,7 +10,7 @@ CORS(app)
 def execute_request(request_body):
     """check policy and all that stuff"""
 
-    response = communication_helper.send_rpc_message(
+    response = communication_helper.send_message(
         method_type=request_body['method_type'],
         table=request_body['table'],
         request_data=request_body['data'])
@@ -27,7 +27,7 @@ def select_request():
         "error_code": 0,
         "error_description": None,
         "data": None,
-        "request": request.json
+        "request": res
     }
 
 
