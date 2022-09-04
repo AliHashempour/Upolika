@@ -12,10 +12,10 @@ class MongoConfig(DBConfig):
         """config of database such as host name , port and etc"""
         super(MongoConfig, self).__init__()
         self.cfg_helper = ConfigHelper()
-        self.database_name = self.cfg_helper.get("MONGODB", "database_name")
         ips = self.cfg_helper.get("MONGODB", "host").split(',')[0]
         port = self.cfg_helper.get("MONGODB", "port").split(',')[0]
         self.client_conf = "mongodb://{}:{}/".format(ips, port)
+        self.database_name = self.cfg_helper.get("MONGODB", "database_name")
 
 
 class MongoWrapper(BaseWrapper):
