@@ -69,7 +69,6 @@ class RpcServer:
         self.channel.start_consuming()
 
     def on_request(self, ch, method, props, body):
-
         worker = self.worker
         response = worker.serve_request(request_body=body)
 
