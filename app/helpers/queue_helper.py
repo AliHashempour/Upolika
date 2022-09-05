@@ -48,41 +48,31 @@ class RpcClient(object):
 
 
 class RpcServer:
-    def __init__(self, rabbit_server_host, queue_name, worker, virtual_host, port, auto_ack=False, durable=False,
-                 instantiate_worker=True, auto_delete=False, username=None, password=None):
-        self.instantiate_worker = instantiate_worker
+    def __init__(self, rabbit_server_host, queue_name, worker, virtual_host,
+                 port, auto_delete=False, username=None, password=None):
         self.queue_name = queue_name
-        if username is not None and password is not None:
-            credentials = pika.PlainCredentials(username=username, password=password)
-            self.connection = pika.BlockingConnection(
-                pika.ConnectionParameters(host=rabbit_server_host, port=port, heartbeat=3600,
-                                          blocked_connection_timeout=3600, connection_attempts=10, retry_delay=2,
-                                          credentials=credentials, virtual_host=virtual_host))
-        else:
-            self.connection = pika.BlockingConnection(
-                pika.ConnectionParameters(host=rabbit_server_host, port=port, heartbeat=3600,
-                                          connection_attempts=10, retry_delay=2,
-                                          blocked_connection_timeout=3600, virtual_host=virtual_host))
+
+        self.connection = pika.BlockingConnection(
+            pika.ConnectionParameters(host=rabbit_server_host, port=port))
 
         self.channel = self.connection.channel()
-        res = self.channel.queue_declare(queue=queue_name, durable=durable, auto_delete=auto_delete)
+        res = self.channel.queue_declare(queue=queue_name)
         self.queue_name = res.method.queue
+
         self.channel.basic_qos(prefetch_count=1)
-        self.channel.basic_consume(self.queue_name, self.on_request, auto_ack=auto_ack)
+        self.channel.basic_consume(queue=self.queue_name, on_message_callback=self.on_request, auto_ack=True)
         self.callback_queue = res.method.queue
+
         self.worker = worker
 
     def start_consuming(self):
         self.channel.start_consuming()
 
     def on_request(self, ch, method, props, body):
-        #
-        if self.instantiate_worker:
-            worker = self.worker()
-        else:
-            worker = self.worker
+
+        worker = self.worker
         response = worker.serve_request(request_body=body)
-        #
+
         ch.basic_publish(exchange='',
                          routing_key=props.reply_to,
                          properties=pika.BasicProperties(correlation_id=props.correlation_id),
