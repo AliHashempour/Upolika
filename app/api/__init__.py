@@ -13,7 +13,7 @@ def execute_request(request_body):
     response = communication_helper.send_message(
         method_type=request_body['method_type'],
         table=request_body['table'],
-        request_data=request_body['data'])
+        body=request_body)
 
     return response
 

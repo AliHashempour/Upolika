@@ -5,7 +5,7 @@ import pika
 
 class RpcClient(object):
 
-    def __init__(self, rabbit_server_host, queue_name, virtual_host, port, username=None, password=None):
+    def __init__(self, rabbit_server_host, queue_name, port):
         self.server_queue = queue_name
 
         self.connection = pika.BlockingConnection(
