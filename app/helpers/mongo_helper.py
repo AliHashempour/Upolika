@@ -3,11 +3,11 @@ from abc import abstractmethod
 
 from pymongo import MongoClient
 
-from app.helpers.base_helpers import DBConfig, BaseMongoWrapper
+from app.helpers.base_helpers import BaseMongoWrapper
 from app.helpers.config_helper import ConfigHelper
 
 
-class MongoConfig(DBConfig):
+class MongoConfig:
     def __init__(self):
         """config of database such as host name , port and etc"""
         super(MongoConfig, self).__init__()
