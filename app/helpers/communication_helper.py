@@ -21,8 +21,8 @@ def send_message(table, body):
     request_body = body
     cfg_helper = config_helper.ConfigHelper()
 
-    rabbit_host = cfg_helper.get('RABBITMQ', 'host')
-    rabbit_port = cfg_helper.get('RABBITMQ', 'port')
+    rabbit_host = cfg_helper.get('RABBIT', 'host')
+    rabbit_port = cfg_helper.get('RABBIT', 'port')
 
     service_queue_name = cfg_helper.get(service.upper(), 'service_queue_name')
     service_exchange_type = cfg_helper.get(service.upper(), 'rabbit_type')
