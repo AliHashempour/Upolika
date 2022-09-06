@@ -13,8 +13,8 @@ if __name__ == "__main__":
 
             rabbit_server = cfg_helper.get("RABBIT", "host")
             rabbit_virtual_host = cfg_helper.get("RABBIT", "virtual_host")
-            username = cfg_helper.get("RABBIT", "user")
-            password = cfg_helper.get("RABBIT", 'pass')
+            username = cfg_helper.get("RABBIT", "username")
+            password = cfg_helper.get("RABBIT", 'password')
             rabbit_type = cfg_helper.get(service_name, "rabbit_type")
             queue_name = cfg_helper.get(service_name, 'service_queue_name')
 

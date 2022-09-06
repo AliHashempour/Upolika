@@ -10,8 +10,8 @@ def send_rpc_message(rabbit_host, port, queue_name, request_body):
 
     message = json.dumps(request_body)
     resp = client.call(message)
-
-    response = json.loads(resp.decode("utf-8"))
+    resp = resp.decode("utf-8").replace("\'", "\"")
+    response = json.loads(resp)
 
     return response
 
