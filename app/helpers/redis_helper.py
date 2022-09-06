@@ -1,3 +1,5 @@
+from abc import ABC
+
 import redis
 
 from app.helpers.base_helpers import BaseRedisWrapper
