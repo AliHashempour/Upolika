@@ -1,4 +1,4 @@
-from abc import abstractmethod
+from abc import abstractmethod, ABC
 
 
 class BaseMongoWrapper:
@@ -24,7 +24,7 @@ class BaseMongoWrapper:
         """deleting record"""
 
 
-class BaseRedisWrapper:
+class BaseRedisWrapper(ABC):
     def __init__(self):
         """"redis config"""
 
@@ -38,33 +38,6 @@ class BaseRedisWrapper:
         pass
 
     def exists(self, key):
-        pass
-
-    def get_all_keys(self):
-        pass
-
-    def get_all_values(self):
-        pass
-
-    def get_all_items(self):
-        pass
-
-    def get_all_items_as_dict(self):
-        pass
-
-    def flush(self):
-        pass
-
-    def get_all_keys_as_list(self):
-        pass
-
-    def get_all_values_as_list(self):
-        pass
-
-    def get_all_items_as_list(self):
-        pass
-
-    def get_all_items_as_dict_as_list(self):
         pass
 
 
