@@ -64,5 +64,5 @@ class BaseServiceWrapper:
         pass
 
     @abstractmethod
-    def wrap(self):
+    def wrap(self, request_body):
         pass
