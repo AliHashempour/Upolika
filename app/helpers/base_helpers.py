@@ -46,5 +46,15 @@ class BaseRedisWrapper:
 
 
 class BaseWorker:
+    @abstractmethod
     def serve_request(self, request_body):
+        pass
+
+
+class BaseServiceWrapper:
+    def __init__(self):
+        pass
+
+    @abstractmethod
+    def wrap(self):
         pass
