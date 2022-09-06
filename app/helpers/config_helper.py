@@ -1,13 +1,16 @@
 import configparser
 import os
+import pathlib
 
 from pathlib import Path
 
 
 class ConfigHelper:
     def __init__(self):
+        root_dir = str(Path(__file__).parent.parent.parent)
+        config_path = os.path.join(root_dir, "config.ini")
         self.config = configparser.ConfigParser()
-        self.config.read('./config.ini')
+        self.config.read(config_path)
 
     def get_config(self, tag):
         return self.config[tag]
