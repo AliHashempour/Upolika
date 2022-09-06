@@ -1,5 +1,6 @@
 import redis
 
+from app.helpers.base_helpers import BaseRedisWrapper
 from app.helpers.config_helper import ConfigHelper
 
 
@@ -12,9 +13,10 @@ class RedisConfig:
         self.redis_conn = redis.Redis(host=ips, port=port, db=0)
 
 
-class RedisWrapper:
+class RedisWrapper(BaseRedisWrapper):
 
     def __init__(self):
+        super().__init__()
         self.conf = RedisConfig()
         self.redis_client = self.conf.redis_conn
 
