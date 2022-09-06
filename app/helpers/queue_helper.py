@@ -40,7 +40,7 @@ class RpcClient(object):
             body=body)
 
         while self.response is None:
-            self.connection.process_data_events(time_limit=0)
+            self.connection.process_data_events(time_limit=None)
 
         self.channel.queue_delete(self.callback_queue)
         self.connection.close()
