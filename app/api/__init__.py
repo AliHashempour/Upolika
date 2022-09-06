@@ -11,7 +11,6 @@ def execute_request(request_body):
     """check policy and all that stuff"""
 
     response = communication_helper.send_message(
-        method_type=request_body['method_type'],
         table=request_body['table'],
         body=request_body)
 

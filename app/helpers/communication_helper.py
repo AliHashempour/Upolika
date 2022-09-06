@@ -1,7 +1,6 @@
 import json
 
 from app.helpers import config_helper, queue_helper
-import pika
 
 
 def send_rpc_message(rabbit_host, port, queue_name, request_body):
@@ -17,8 +16,7 @@ def send_rpc_message(rabbit_host, port, queue_name, request_body):
     return response
 
 
-def send_message(method_type, table, body):
-    method = method_type
+def send_message(table, body):
     service = table
     request_body = body
     cfg_helper = config_helper.ConfigHelper()
