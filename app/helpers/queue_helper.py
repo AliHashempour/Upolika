@@ -48,7 +48,7 @@ class RpcClient(object):
 
 
 class RpcServer:
-    def __init__(self, rabbit_server_host, queue_name, worker, virtual_host,
+    def __init__(self, rabbit_server_host, queue_name, worker,
                  port, auto_delete=False, username=None, password=None):
         self.queue_name = queue_name
 
@@ -70,7 +70,7 @@ class RpcServer:
 
     def on_request(self, ch, method, props, body):
         worker = self.worker
-        response = worker.serve_request(request_body=body)
+        response = worker.wrap(body)
 
         ch.basic_publish(exchange='',
                          routing_key=props.reply_to,
