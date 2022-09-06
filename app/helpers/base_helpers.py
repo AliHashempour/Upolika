@@ -45,7 +45,15 @@ class BaseRedisWrapper:
         pass
 
 
+class BaseLogic:
+    def __init__(self):
+        pass
+
+
 class BaseWorker:
+    def __init__(self, logic):
+        self.logic = logic
+
     @abstractmethod
     def serve_request(self, request_body):
         pass
