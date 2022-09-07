@@ -5,6 +5,5 @@ class UserLogic(BaseLogic):
     def __init__(self):
         super().__init__()
 
-    @staticmethod
-    def select_users(data):
+    def select_users(self, data):
         return data
