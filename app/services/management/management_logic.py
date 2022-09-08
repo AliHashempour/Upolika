@@ -1,7 +1,7 @@
 from app.helpers.base_helpers import BaseLogic
 
 
-class TransactionLogic(BaseLogic):
+class ManagementLogic(BaseLogic):
     def __init__(self):
         super().__init__()
 

@@ -1,18 +1,18 @@
 import json
 
 from app.helpers.base_helpers import BaseServiceWrapper, BaseWorker
-from app.services.transaction.transaction_logic import TransactionLogic
+from app.services.management.management_logic import ManagementLogic
 
 
-class TransactionWorkerWrapper(BaseServiceWrapper):
+class ManagementWorkerWrapper(BaseServiceWrapper):
     def __init__(self):
         super().__init__()
 
-        self.transaction_logic = TransactionLogic()
-        self.transaction_select_worker = TransactionSelectWorker(self.transaction_logic)
-        self.transaction_insert_worker = TransactionInsertWorker(self.transaction_logic)
-        self.transaction_update_worker = TransactionUpdateWorker(self.transaction_logic)
-        self.transaction_delete_worker = TransactionDeleteWorker(self.transaction_logic)
+        self.transaction_logic = ManagementLogic()
+        self.transaction_select_worker = ManagementSelectWorker(self.transaction_logic)
+        self.transaction_insert_worker = ManagementInsertWorker(self.transaction_logic)
+        self.transaction_update_worker = ManagementUpdateWorker(self.transaction_logic)
+        self.transaction_delete_worker = ManagementDeleteWorker(self.transaction_logic)
 
     def wrap(self, request_body):
         request = json.loads(request_body.decode("utf-8"))
@@ -28,9 +28,9 @@ class TransactionWorkerWrapper(BaseServiceWrapper):
             return self.transaction_delete_worker.serve_request(request)
 
 
-class TransactionSelectWorker(BaseWorker):
+class ManagementSelectWorker(BaseWorker):
     def __init__(self, logic):
-        super(TransactionSelectWorker, self).__init__(logic=logic)
+        super(ManagementSelectWorker, self).__init__(logic=logic)
 
     def serve_request(self, request):
         data = request["data"]
@@ -41,9 +41,9 @@ class TransactionSelectWorker(BaseWorker):
         return data
 
 
-class TransactionInsertWorker(BaseWorker):
+class ManagementInsertWorker(BaseWorker):
     def __init__(self, logic):
-        super(TransactionInsertWorker, self).__init__(logic=logic)
+        super(ManagementInsertWorker, self).__init__(logic=logic)
 
     def serve_request(self, request):
         data = request["data"]
@@ -54,9 +54,9 @@ class TransactionInsertWorker(BaseWorker):
         return data
 
 
-class TransactionUpdateWorker(BaseWorker):
+class ManagementUpdateWorker(BaseWorker):
     def __init__(self, logic):
-        super(TransactionUpdateWorker, self).__init__(logic=logic)
+        super(ManagementUpdateWorker, self).__init__(logic=logic)
 
     def serve_request(self, request):
         data = request["data"]
@@ -67,9 +67,9 @@ class TransactionUpdateWorker(BaseWorker):
         return data
 
 
-class TransactionDeleteWorker(BaseWorker):
+class ManagementDeleteWorker(BaseWorker):
     def __init__(self, logic):
-        super(TransactionDeleteWorker, self).__init__(logic=logic)
+        super(ManagementDeleteWorker, self).__init__(logic=logic)
 
     def serve_request(self, request):
         data = request["data"]

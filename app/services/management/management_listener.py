@@ -2,10 +2,10 @@ import time
 
 from app.helpers import config_helper
 from app.helpers.queue_helper import RpcServer
-from app.services.transaction.transaction_worker import TransactionWorkerWrapper
+from app.services.management.management_worker import ManagementWorkerWrapper
 
 if __name__ == "__main__":
-    service_name = 'TRANSACTION'
+    service_name = 'MANAGEMENT'
 
     while True:
         try:
@@ -18,7 +18,7 @@ if __name__ == "__main__":
             rabbit_type = cfg_helper.get(service_name, "rabbit_type")
             queue_name = cfg_helper.get(service_name, 'service_queue_name')
 
-            worker = TransactionWorkerWrapper()
+            worker = ManagementWorkerWrapper()
 
             if rabbit_type == "rpc":
                 server = RpcServer(rabbit_server_host=rabbit_server, queue_name=queue_name,
