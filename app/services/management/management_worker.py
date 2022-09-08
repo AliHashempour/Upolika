@@ -35,8 +35,14 @@ class ManagementSelectWorker(BaseWorker):
     def serve_request(self, request):
         data = request["data"]
         method = request["method"]
-        if method == "select_transactions":
-            return self.logic.select_transactions(data)
+        if method == "login":
+            return self.logic.login_user(data)
+        elif method == "select_users":
+            return self.logic.select_users(data)
+        elif method == "select_accounts":
+            return self.logic.select_accounts(data)
+        elif method == "find_account":
+            return self.logic.find_account(data)
 
         return data
 
@@ -48,8 +54,12 @@ class ManagementInsertWorker(BaseWorker):
     def serve_request(self, request):
         data = request["data"]
         method = request["method"]
-        if method == "insert_transaction":
-            return self.logic.insert_transaction(data)
+        if method == "sign_up":
+            return self.logic.sign_up(data)
+        elif method == "add_user":
+            return self.logic.add_user(data)
+        elif method == "add_account":
+            return self.logic.add_account(data)
 
         return data
 
@@ -61,8 +71,8 @@ class ManagementUpdateWorker(BaseWorker):
     def serve_request(self, request):
         data = request["data"]
         method = request["method"]
-        if method == "update_transaction":
-            return self.logic.update_transaction(data)
+        if method == "update_user":
+            return self.logic.update_user(data)
 
         return data
 
@@ -74,7 +84,9 @@ class ManagementDeleteWorker(BaseWorker):
     def serve_request(self, request):
         data = request["data"]
         method = request["method"]
-        if method == "delete_transaction":
-            return self.logic.delete_transaction(data)
+        if method == "remove_user":
+            return self.logic.remove_user(data)
+        elif method == "remove_account":
+            return self.logic.remove_account(data)
 
         return data

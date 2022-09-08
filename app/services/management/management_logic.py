@@ -11,7 +11,7 @@ class ManagementLogic(BaseLogic):
         mongo_helper = self.mongo_wrapper
         return data
 
-    def login(self, data):
+    def login_user(self, data):
         mongo_helper = self.mongo_wrapper
         return data
 
@@ -43,4 +43,6 @@ class ManagementLogic(BaseLogic):
         mongo_helper = self.mongo_wrapper
         return data
 
-
+    def update_user(self, data):
+        mongo_helper = self.mongo_wrapper
+        return data
