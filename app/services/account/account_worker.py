@@ -35,8 +35,10 @@ class AccountSelectWorker(BaseWorker):
     def serve_request(self, request):
         data = request["data"]
         method = request["method"]
-        if method == "select_accounts":
-            return self.logic.select_accounts(data)
+        if method == "get_transactions":
+            return self.logic.get_transactions(data)
+        elif method == "get_account":
+            return self.logic.get_account(data)
 
         return data
 
@@ -48,8 +50,8 @@ class AccountInsertWorker(BaseWorker):
     def serve_request(self, request):
         data = request["data"]
         method = request["method"]
-        if method == "insert_account":
-            return self.logic.insert_account(data)
+        if method == "add_transaction":
+            return self.logic.add_transaction(data)
 
         return data
 
@@ -61,8 +63,8 @@ class AccountUpdateWorker(BaseWorker):
     def serve_request(self, request):
         data = request["data"]
         method = request["method"]
-        if method == "update_account":
-            return self.logic.update_account(data)
+        if method == "update_balance":
+            return self.logic.update_balance(data)
 
         return data
 
