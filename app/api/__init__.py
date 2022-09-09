@@ -8,7 +8,11 @@ CORS(app)
 
 
 def execute_request(request_body):
-    """check policy and all that stuff"""
+    permitted_methods = ['sign_up', 'login']
+
+    if request_body['method'] not in permitted_methods:
+        if not utils.check_token(request_body):
+            return {'status': 'error', 'message': 'Invalid token'}
 
     response = communication_helper.send_message(
         table=request_body['table'],
