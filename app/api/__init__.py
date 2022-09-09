@@ -70,11 +70,35 @@ def delete_request():
 def sign_up():
     request_body = request.json
     data = request_body['data']
-    res = utils.index_user(data=data)
+    request_body['table'] = 'management'
+    request_body['method'] = 'insert'
+    request_body['method_type'] = 'sign_up'
+
+    response = execute_request(request_body)
+
     return {
         "is_successful": True,
         "error_code": 0,
         "error_description": None,
-        "data": None,
-        "response": res
+        "data": data,
+        "response": response
+    }
+
+
+@app.route('/api/v1/login', methods=['post'])
+def login():
+    request_body = request.json
+    data = request_body['data']
+    request_body['table'] = 'management'
+    request_body['method'] = 'select'
+    request_body['method_type'] = 'login'
+
+    response = execute_request(request_body)
+
+    return {
+        "is_successful": True,
+        "error_code": 0,
+        "error_description": None,
+        "data": data,
+        "response": response
     }
