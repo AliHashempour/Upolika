@@ -1,3 +1,6 @@
+from app.exceptions.general_exception import *
+
+
 def check_schema(data, schema):
     invalid_field_name = None
     for field in data.keys():
@@ -6,11 +9,11 @@ def check_schema(data, schema):
             invalid_field_name = field
 
     if invalid_field_name is not None:
-        # raise InvalidFieldName(invalid_field_name)
-        return False  # todo exception
+        raise InvalidFieldName(invalid_field_name)
+
     for key, value in schema.items():
         if value['is_required'] is True and key not in data.keys():
-            return False  # todo exception
+            raise RequiredFieldError(key)
 
 
 def check_full_schema(data, schema):
