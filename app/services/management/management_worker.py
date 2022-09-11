@@ -51,6 +51,12 @@ class ManagementSelectWorker(BaseWorker):
             return {"is_successful": False, "exception_message": str(e)}
         except RequiredFieldError as e:
             return {"is_successful": False, "exception_message": str(e)}
+        except InvalidUser as e:
+            return {"is_successful": False, "exception_message": str(e)}
+        except UserExists as e:
+            return {"is_successful": False, "exception_message": str(e)}
+        except AppException as e:
+            return {"is_successful": False, "exception_message": str(e)}
 
 
 class ManagementInsertWorker(BaseWorker):
@@ -73,6 +79,12 @@ class ManagementInsertWorker(BaseWorker):
             return {"is_successful": False, "exception_message": str(e)}
         except RequiredFieldError as e:
             return {"is_successful": False, "exception_message": str(e)}
+        except InvalidUser as e:
+            return {"is_successful": False, "exception_message": str(e)}
+        except UserExists as e:
+            return {"is_successful": False, "exception_message": str(e)}
+        except AppException as e:
+            return {"is_successful": False, "exception_message": str(e)}
 
 
 class ManagementUpdateWorker(BaseWorker):
@@ -90,6 +102,12 @@ class ManagementUpdateWorker(BaseWorker):
         except InvalidFieldName as e:
             return {"is_successful": False, "exception_message": str(e)}
         except RequiredFieldError as e:
+            return {"is_successful": False, "exception_message": str(e)}
+        except InvalidUser as e:
+            return {"is_successful": False, "exception_message": str(e)}
+        except UserExists as e:
+            return {"is_successful": False, "exception_message": str(e)}
+        except AppException as e:
             return {"is_successful": False, "exception_message": str(e)}
 
 
@@ -110,4 +128,10 @@ class ManagementDeleteWorker(BaseWorker):
         except InvalidFieldName as e:
             return {"is_successful": False, "exception_message": str(e)}
         except RequiredFieldError as e:
+            return {"is_successful": False, "exception_message": str(e)}
+        except InvalidUser as e:
+            return {"is_successful": False, "exception_message": str(e)}
+        except UserExists as e:
+            return {"is_successful": False, "exception_message": str(e)}
+        except AppException as e:
             return {"is_successful": False, "exception_message": str(e)}
