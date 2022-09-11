@@ -2,6 +2,7 @@ import json
 
 from app.helpers.base_helpers import BaseServiceWrapper, BaseWorker
 from app.services.management.management_logic import ManagementLogic
+from app.exceptions.general_exception import *
 
 
 class ManagementWorkerWrapper(BaseServiceWrapper):
@@ -33,18 +34,23 @@ class ManagementSelectWorker(BaseWorker):
         super(ManagementSelectWorker, self).__init__(logic=logic)
 
     def serve_request(self, request):
-        data = request["data"]
-        method = request["method"]
-        if method == "login":
-            return self.logic.login_user(data)
-        elif method == "select_users":
-            return self.logic.select_users(data)
-        elif method == "select_accounts":
-            return self.logic.select_accounts(data)
-        elif method == "find_account":
-            return self.logic.find_account(data)
+        try:
+            data = request["data"]
+            method = request["method"]
 
-        return data
+            if method == "login":
+                return self.logic.login_user(data)
+            elif method == "select_users":
+                return self.logic.select_users(data)
+            elif method == "select_accounts":
+                return self.logic.select_accounts(data)
+            elif method == "find_account":
+                return self.logic.find_account(data)
+
+        except InvalidFieldName as e:
+            return {"is_successful": False, "exception_message": str(e)}
+        except RequiredFieldError as e:
+            return {"is_successful": False, "exception_message": str(e)}
 
 
 class ManagementInsertWorker(BaseWorker):
@@ -52,16 +58,21 @@ class ManagementInsertWorker(BaseWorker):
         super(ManagementInsertWorker, self).__init__(logic=logic)
 
     def serve_request(self, request):
-        data = request["data"]
-        method = request["method"]
-        if method == "sign_up":
-            return self.logic.sign_up(data)
-        elif method == "add_user":
-            return self.logic.add_user(data)
-        elif method == "add_account":
-            return self.logic.add_account(data)
+        try:
+            data = request["data"]
+            method = request["method"]
 
-        return data
+            if method == "sign_up":
+                return self.logic.sign_up(data)
+            elif method == "add_user":
+                return self.logic.add_user(data)
+            elif method == "add_account":
+                return self.logic.add_account(data)
+
+        except InvalidFieldName as e:
+            return {"is_successful": False, "exception_message": str(e)}
+        except RequiredFieldError as e:
+            return {"is_successful": False, "exception_message": str(e)}
 
 
 class ManagementUpdateWorker(BaseWorker):
@@ -69,12 +80,17 @@ class ManagementUpdateWorker(BaseWorker):
         super(ManagementUpdateWorker, self).__init__(logic=logic)
 
     def serve_request(self, request):
-        data = request["data"]
-        method = request["method"]
-        if method == "update_user":
-            return self.logic.update_user(data)
+        try:
+            data = request["data"]
+            method = request["method"]
 
-        return data
+            if method == "update_user":
+                return self.logic.update_user(data)
+
+        except InvalidFieldName as e:
+            return {"is_successful": False, "exception_message": str(e)}
+        except RequiredFieldError as e:
+            return {"is_successful": False, "exception_message": str(e)}
 
 
 class ManagementDeleteWorker(BaseWorker):
@@ -82,11 +98,16 @@ class ManagementDeleteWorker(BaseWorker):
         super(ManagementDeleteWorker, self).__init__(logic=logic)
 
     def serve_request(self, request):
-        data = request["data"]
-        method = request["method"]
-        if method == "remove_user":
-            return self.logic.remove_user(data)
-        elif method == "remove_account":
-            return self.logic.remove_account(data)
+        try:
+            data = request["data"]
+            method = request["method"]
 
-        return data
+            if method == "delete_user":
+                return self.logic.delete_user(data)
+            elif method == "delete_account":
+                return self.logic.delete_account(data)
+
+        except InvalidFieldName as e:
+            return {"is_successful": False, "exception_message": str(e)}
+        except RequiredFieldError as e:
+            return {"is_successful": False, "exception_message": str(e)}
