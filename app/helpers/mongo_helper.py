@@ -32,7 +32,7 @@ class MongoWrapper(BaseMongoWrapper):
     def insert(self, table_name: str, record: dict):
         collection = self.get_collection(table_name)
         res = collection.insert_one(record)
-        return res.inserted_id
+        return str(res.inserted_id)
 
     def select(self, table_name: str, query: dict, sort: list = None):
         collection = self.get_collection(table_name)
