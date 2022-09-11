@@ -1,3 +1,4 @@
+import uuid
 from app.helpers.base_helpers import BaseLogic
 from app.helpers.config_helper import ConfigHelper
 from app.helpers.mongo_helper import MongoWrapper
@@ -14,15 +15,38 @@ class ManagementLogic(BaseLogic):
 
     def sign_up(self, data):
         check_schema(data, user_definition.user_schema)
-        data = preprocess(data, user_definition.user_schema)
+        processed_data = preprocess(data, user_definition.user_schema)
 
-        res_id = self.mongo_wrapper.insert(self.user_table_name, data)
-        message = {'is_successful': True, 'message': 'User added successfully', 'id': res_id}
+        user_existence = self.mongo_wrapper.exists(self.user_table_name, processed_data)
+
+        if user_existence:
+            raise UserExists()
+        else:
+            self.mongo_wrapper.insert(self.user_table_name, processed_data)
+
+            message = {
+                'is_successful': True,
+                'message': 'User added successfully',
+            }
         return message
 
     def login_user(self, data):
-        mongo_helper = self.mongo_wrapper
-        return data
+        required_fields = ['username', 'password']
+
+        check_schema(data, user_definition.user_schema, required_fields)
+        processed_data = preprocess(data, user_definition.user_schema)
+
+        record = self.mongo_wrapper.select(self.user_table_name, processed_data)
+        if len(record) == 0:
+            raise InvalidUser()
+        else:
+            user_token = str(uuid.uuid4())  # todo set user token in redis in api
+            message = {
+                'is_successful': True,
+                'message': 'User logged in successfully',
+                'token': user_token
+            }
+            return message
 
     def add_user(self, data):
         mongo_helper = self.mongo_wrapper
