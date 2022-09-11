@@ -18,12 +18,10 @@ class ManagementLogic(BaseLogic):
         processed_data = preprocess(data, user_definition.user_schema)
 
         user_existence = self.mongo_wrapper.exists(self.user_table_name, processed_data)
-
         if user_existence:
             raise UserExists()
         else:
             self.mongo_wrapper.insert(self.user_table_name, processed_data)
-
             message = {
                 'is_successful': True,
                 'message': 'User added successfully',
@@ -49,8 +47,19 @@ class ManagementLogic(BaseLogic):
             return message
 
     def add_user(self, data):
-        mongo_helper = self.mongo_wrapper
-        return data
+        check_schema(data, user_definition.user_schema)
+        processed_data = preprocess(data, user_definition.user_schema)
+
+        user_existence = self.mongo_wrapper.exists(self.user_table_name, processed_data)
+        if user_existence:
+            raise UserExists()
+        else:
+            self.mongo_wrapper.insert(self.user_table_name, processed_data)
+            message = {
+                'is_successful': True,
+                'message': 'User added successfully',
+            }
+        return message
 
     def remove_user(self, data):
         mongo_helper = self.mongo_wrapper
