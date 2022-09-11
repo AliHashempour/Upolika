@@ -1,16 +1,25 @@
 from app.exceptions.general_exception import *
 
 
-def check_schema(data, schema):
+def check_schema(data, schema, required_fields=None):
     invalid_field_name = None
-    for field in data.keys():
 
+    for field in data.keys():
         if field not in schema.keys():
             invalid_field_name = field
 
     if invalid_field_name is not None:
         raise InvalidFieldName(invalid_field_name)
 
+    if required_fields is None:
+        check_is_required(data, schema)
+    else:
+        for key in required_fields:
+            if key not in data.keys():
+                raise RequiredFieldError(key)
+
+
+def check_is_required(data, schema):
     for key, value in schema.items():
         if value['is_required'] is True and key not in data.keys():
             raise RequiredFieldError(key)
