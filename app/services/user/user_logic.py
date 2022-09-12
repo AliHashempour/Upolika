@@ -83,8 +83,10 @@ class UserLogic(BaseLogic):
             raise AccountNotFound()
         else:
             account = res[0]
+            if data['amount'] > account['balance']:
+                raise InsufficientBalance()
+            
             account['balance'] -= data['amount']
-
             account['transaction_list'] = self.add_transaction(account, data, 'withdraw')
 
             self.mongo_wrapper.update(self.account_table_name, {'owner_national_id': data['owner_national_id'],

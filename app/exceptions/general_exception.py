@@ -41,3 +41,8 @@ class InvalidUser(AppException):
 class PermissionDenied(AppException):
     def __init__(self, role):
         super(PermissionDenied, self).__init__("You have to be a {} to perform this action.".format(role))
+
+
+class InsufficientBalance(AppException):
+    def __init__(self):
+        super(InsufficientBalance, self).__init__("Insufficient balance.")
