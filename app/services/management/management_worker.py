@@ -35,7 +35,7 @@ class ManagementSelectWorker(BaseWorker):
 
     def serve_request(self, request):
         try:
-            data = request["data"]
+
             method = request["method"]
 
             if method == "login":
@@ -65,7 +65,7 @@ class ManagementInsertWorker(BaseWorker):
 
     def serve_request(self, request):
         try:
-            data = request["data"]
+
             method = request["method"]
 
             if method == "sign_up":
@@ -93,7 +93,7 @@ class ManagementUpdateWorker(BaseWorker):
 
     def serve_request(self, request):
         try:
-            data = request["data"]
+
             method = request["method"]
 
             if method == "update_user":
@@ -117,7 +117,6 @@ class ManagementDeleteWorker(BaseWorker):
 
     def serve_request(self, request):
         try:
-            data = request["data"]
             method = request["method"]
 
             if method == "delete_user":
