@@ -71,12 +71,27 @@ class ManagementLogic(BaseLogic):
     def remove_user(self, request_body):
         data = request_body['data']
 
-        return data
+        check_role(request_body, for_admin=True)
+        check_schema(data, user_definition.user_schema)
+
+        acknowledged = self.mongo_wrapper.delete(self.user_table_name, data)
+        if acknowledged:
+            message = {
+                'is_successful': True,
+                'message': 'User removed successfully',
+            }
+
+            return message
 
     def select_all_users(self, request_body):
         data = request_body['data']
 
-        return data
+        check_role(request_body, for_admin=True)
+
+        users = self.mongo_wrapper.select(self.user_table_name, data)
+        message = {'is_successful': True, 'total_users': len(users), 'result': users}
+
+        return message
 
     def add_account(self, request_body):
         data = request_body['data']
