@@ -23,5 +23,10 @@ user_schema = {
         "_type": int,
         "_null_value": 1,
         'is_required': False
+    },
+    "category": {
+        "_type": str,
+        "_null_value": 'USER',
+        'is_required': False
     }
 }
