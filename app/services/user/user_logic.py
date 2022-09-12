@@ -127,15 +127,49 @@ class UserLogic(BaseLogic):
 
     def check_balance(self, request_body):
         data = request_body['data']
-        pass
+        required_fields = ['owner_national_id', 'serial']
+        check_schema(data, account_definition.account_schema, required_fields)
+
+        res = self.mongo_wrapper.select(self.account_table_name, {'owner_national_id': data['owner_national_id'],
+                                                                  'serial': data['serial']})
+        if len(res) == 0:
+            raise AccountNotFound()
+        else:
+            account = res[0]
+            message = {
+                'is_successful': True,
+                'message': 'Balance checked successfully',
+                'balance': account['balance']
+            }
+            return message
 
     def select_accounts(self, request_body):
         data = request_body['data']
-        pass
+        required_fields = ['owner_national_id']
+        check_schema(data, account_definition.account_schema, required_fields)
+
+        res = self.mongo_wrapper.select(self.account_table_name, {'owner_national_id': data['owner_national_id']})
+        message = {
+            'is_successful': True,
+            'total_accounts': len(res),
+            'result': res
+        }
+        return message
 
     def get_user(self, request_body):
         data = request_body['data']
-        pass
+        required_fields = ['national_id']
+        check_schema(data, user_definition.user_schema, required_fields)
+
+        res = self.mongo_wrapper.select(self.user_table_name, {'national_id': data['national_id']})
+        if len(res) == 0:
+            raise UserNotFound()
+        else:
+            message = {
+                'is_successful': True,
+                'result': res[0]
+            }
+            return message
 
     @staticmethod
     def add_transaction(account, data, transaction_type):
