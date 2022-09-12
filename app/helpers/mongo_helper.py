@@ -42,12 +42,11 @@ class MongoWrapper(BaseMongoWrapper):
             res = collection.find(query).sort(sort[0], sort[1])
         return [*res]
 
-    def update(self, table_name, _id, doc):
+    def update(self, table_name, query, doc):
         collection = self.get_collection(table_name)
         doc = {"$set": doc}
-        query = {"id": _id}
         res = collection.update_one(query, doc)
-        return res
+        return res.acknowledged
 
     def delete(self, table_name, query: dict):
         collection = self.get_collection(table_name)
