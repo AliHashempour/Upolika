@@ -85,7 +85,7 @@ class UserLogic(BaseLogic):
             account = res[0]
             if data['amount'] > account['balance']:
                 raise InsufficientBalance()
-            
+
             account['balance'] -= data['amount']
             account['transaction_list'] = self.add_transaction(account, data, 'withdraw')
 
@@ -99,7 +99,31 @@ class UserLogic(BaseLogic):
 
     def transfer(self, request_body):
         data = request_body['data']
-        pass
+        required_fields = ['src_account_serial', 'dst_account_serial', 'amount']
+        check_schema(data, account_definition.account_schema, required_fields)
+
+        src_account = self.mongo_wrapper.select(self.account_table_name, {'serial': data['src_account_serial']})
+        dst_account = self.mongo_wrapper.select(self.account_table_name, {'serial': data['dst_account_serial']})
+        if len(src_account) == 0 or len(dst_account) == 0:
+            raise AccountNotFound()
+        else:
+            src_account = src_account[0]
+            dst_account = dst_account[0]
+            if data['amount'] > src_account['balance']:
+                raise InsufficientBalance()
+
+            src_account['balance'] -= data['amount']
+            dst_account['balance'] += data['amount']
+            src_account['transaction_list'] = self.add_transaction(src_account, data, 'withdraw')
+            dst_account['transaction_list'] = self.add_transaction(dst_account, data, 'deposit')
+
+            self.mongo_wrapper.update(self.account_table_name, {'serial': data['src_account_serial']}, src_account)
+            self.mongo_wrapper.update(self.account_table_name, {'serial': data['dst_account_serial']}, dst_account)
+            message = {
+                'is_successful': True,
+                'message': 'Transfer successful',
+            }
+            return message
 
     def check_balance(self, request_body):
         data = request_body['data']
