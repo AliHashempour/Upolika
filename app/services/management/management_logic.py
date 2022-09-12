@@ -180,12 +180,12 @@ class ManagementLogic(BaseLogic):
         if len(user) == 0:
             raise UserNotFound()
         else:
-            acknowledged = self.mongo_wrapper.update(self.user_table_name,
-                                                     {'national_id': national_id},
-                                                     preprocessed_data)
-            if acknowledged:
-                message = {
-                    'is_successful': True,
-                    'message': 'User updated successfully',
-                }
-                return message
+            self.mongo_wrapper.update(self.user_table_name,
+                                      {'national_id': national_id},
+                                      preprocessed_data)
+
+            message = {
+                'is_successful': True,
+                'message': 'User updated successfully',
+            }
+            return message
