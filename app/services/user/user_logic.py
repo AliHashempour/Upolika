@@ -1,3 +1,5 @@
+import datetime
+
 from app.helpers.base_helpers import BaseLogic
 from app.helpers.config_helper import ConfigHelper
 from app.helpers.mongo_helper import MongoWrapper
@@ -49,7 +51,27 @@ class UserLogic(BaseLogic):
 
     def deposit(self, request_body):
         data = request_body['data']
-        pass
+        required_fields = ['owner_national_id', 'serial', 'amount']
+
+        check_schema(data, account_definition.account_schema, required_fields)
+
+        res = self.mongo_wrapper.select(self.account_table_name, {'owner_national_id': data['owner_national_id'],
+                                                                  'serial': data['serial']})
+        if len(res) == 0:
+            raise AccountNotFound()
+        else:
+            account = res[0]
+            account['balance'] += data['amount']
+
+            account['transaction_list'] = self.add_transaction(account, data)
+
+            self.mongo_wrapper.update(self.account_table_name, {'owner_national_id': data['owner_national_id'],
+                                                                'serial': data['serial']}, account)
+            message = {
+                'is_successful': True,
+                'message': 'Deposit successful',
+            }
+            return message
 
     def withdraw(self, request_body):
         data = request_body['data']
@@ -70,3 +92,15 @@ class UserLogic(BaseLogic):
     def get_user(self, request_body):
         data = request_body['data']
         pass
+
+    @staticmethod
+    def add_transaction(account, data):
+        account_transactions = account['transaction_list']
+        transaction_record = {
+            'amount': data['amount'],
+            'owner_account_serial': data['serial'],
+            'transaction_type': 'deposit',
+            'transaction_date': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+        account_transactions.append(transaction_record)
+        return account_transactions
