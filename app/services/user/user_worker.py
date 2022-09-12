@@ -33,16 +33,14 @@ class UserSelectWorker(BaseWorker):
         super(UserSelectWorker, self).__init__(logic=logic)
 
     def serve_request(self, request):
-        data = request["data"]
+
         method = request["method"]
         if method == "check_balance":
-            return self.logic.check_balance(data)
+            return self.logic.check_balance(request)
         elif method == "select_accounts":
-            return self.logic.select_accounts(data)
+            return self.logic.select_accounts(request)
         elif method == "get_user":
-            return self.logic.get_user(data)
-
-        return data
+            return self.logic.get_user(request)
 
 
 class UserInsertWorker(BaseWorker):
@@ -50,12 +48,9 @@ class UserInsertWorker(BaseWorker):
         super(UserInsertWorker, self).__init__(logic=logic)
 
     def serve_request(self, request):
-        data = request["data"]
         method = request["method"]
         if method == "add_account":
-            return self.logic.add_account(data)
-
-        return data
+            return self.logic.add_account(request)
 
 
 class UserUpdateWorker(BaseWorker):
@@ -63,14 +58,12 @@ class UserUpdateWorker(BaseWorker):
         super(UserUpdateWorker, self).__init__(logic=logic)
 
     def serve_request(self, request):
-        data = request["data"]
+
         method = request["method"]
         if method == "deposit":
-            return self.logic.deposit(data)
+            return self.logic.deposit(request)
         elif method == "withdraw":
-            return self.logic.withdraw(data)
-
-        return data
+            return self.logic.withdraw(request)
 
 
 class UserDeleteWorker(BaseWorker):
@@ -78,9 +71,6 @@ class UserDeleteWorker(BaseWorker):
         super(UserDeleteWorker, self).__init__(logic=logic)
 
     def serve_request(self, request):
-        data = request["data"]
         method = request["method"]
         if method == "remove_account":
-            return self.logic.remove_account(data)
-
-        return data
+            return self.logic.remove_account(request)
