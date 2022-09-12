@@ -1,4 +1,5 @@
 from app.exceptions.general_exception import *
+from app.helpers.config_helper import ConfigHelper
 
 
 def check_schema(data, schema, required_fields=None):
@@ -56,3 +57,18 @@ def field_is_empty(field, _field_name, schema):
         return True
     else:
         return False
+
+
+def check_role(request_body, for_admin=False):
+    role_key = request_body['role_key']
+
+    cfg_helper = ConfigHelper()
+    admin_key = cfg_helper.get('ROLES_KEY', 'ADMIN')
+    user_key = cfg_helper.get('ROLES_KEY', 'USER')
+
+    if for_admin is True:
+        if role_key != admin_key:
+            raise PermissionDenied('admin')
+    elif for_admin is False:
+        if role_key != user_key:
+            raise PermissionDenied('user')
