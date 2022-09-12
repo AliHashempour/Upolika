@@ -18,6 +18,9 @@ def check_schema(data, schema, required_fields=None):
         for key in required_fields:
             if key not in data.keys():
                 raise RequiredFieldError(key)
+        for field in data.keys():
+            if field not in required_fields:
+                del data[field]
 
 
 def check_is_required(data, schema):
