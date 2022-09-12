@@ -39,13 +39,13 @@ class ManagementSelectWorker(BaseWorker):
             method = request["method"]
 
             if method == "login":
-                return self.logic.login_user(data)
-            elif method == "select_users":
-                return self.logic.select_users(data)
-            elif method == "select_accounts":
-                return self.logic.select_accounts(data)
+                return self.logic.login_user(data, request)
+            elif method == "select_all_users":
+                return self.logic.select_all_users(data, request)
+            elif method == "select_all_accounts":
+                return self.logic.select_all_accounts(data, request)
             elif method == "find_account":
-                return self.logic.find_account(data)
+                return self.logic.find_account(data, request)
 
         except InvalidFieldName as e:
             return {"is_successful": False, "exception_message": str(e)}
@@ -69,11 +69,11 @@ class ManagementInsertWorker(BaseWorker):
             method = request["method"]
 
             if method == "sign_up":
-                return self.logic.sign_up(data)
+                return self.logic.sign_up(data, request)
             elif method == "add_user":
-                return self.logic.add_user(data)
+                return self.logic.add_user(data, request)
             elif method == "add_account":
-                return self.logic.add_account(data)
+                return self.logic.add_account(data, request)
 
         except InvalidFieldName as e:
             return {"is_successful": False, "exception_message": str(e)}
@@ -97,7 +97,7 @@ class ManagementUpdateWorker(BaseWorker):
             method = request["method"]
 
             if method == "update_user":
-                return self.logic.update_user(data)
+                return self.logic.update_user(data, request)
 
         except InvalidFieldName as e:
             return {"is_successful": False, "exception_message": str(e)}
@@ -121,9 +121,9 @@ class ManagementDeleteWorker(BaseWorker):
             method = request["method"]
 
             if method == "delete_user":
-                return self.logic.delete_user(data)
+                return self.logic.delete_user(data, request)
             elif method == "delete_account":
-                return self.logic.delete_account(data)
+                return self.logic.delete_account(data, request)
 
         except InvalidFieldName as e:
             return {"is_successful": False, "exception_message": str(e)}

@@ -13,7 +13,7 @@ class ManagementLogic(BaseLogic):
         self.cfg_helper = ConfigHelper()
         self.user_table_name = self.cfg_helper.get_config("USER")["table_name"]
 
-    def sign_up(self, data):
+    def sign_up(self, data, request_body):
         check_schema(data, user_definition.user_schema)
         processed_data = preprocess(data, user_definition.user_schema)
 
@@ -28,7 +28,7 @@ class ManagementLogic(BaseLogic):
             }
         return message
 
-    def login_user(self, data):
+    def login_user(self, data, request_body):
         required_fields = ['username', 'password']
 
         check_schema(data, user_definition.user_schema, required_fields)
@@ -42,11 +42,12 @@ class ManagementLogic(BaseLogic):
             message = {
                 'is_successful': True,
                 'message': 'User logged in successfully',
-                'token': user_token
+                'token': user_token,
+                'user': record
             }
             return message
 
-    def add_user(self, data):
+    def add_user(self, data, request_body):
         check_schema(data, user_definition.user_schema)
         processed_data = preprocess(data, user_definition.user_schema)
 
@@ -61,30 +62,30 @@ class ManagementLogic(BaseLogic):
             }
         return message
 
-    def remove_user(self, data):
+    def remove_user(self, data, request_body):
         mongo_helper = self.mongo_wrapper
         return data
 
-    def select_users(self, data):
+    def select_all_users(self, data, request_body):
         mongo_helper = self.mongo_wrapper
         return data
 
-    def add_account(self, data):
+    def add_account(self, data, request_body):
         mongo_helper = self.mongo_wrapper
         return data
 
-    def remove_account(self, data):
+    def remove_account(self, data, request_body):
         mongo_helper = self.mongo_wrapper
         return data
 
-    def select_accounts(self, data):
+    def select_all_accounts(self, data, request_body):
         mongo_helper = self.mongo_wrapper
         return data
 
-    def find_account(self, data):
+    def find_account(self, data, request_body):
         mongo_helper = self.mongo_wrapper
         return data
 
-    def update_user(self, data):
+    def update_user(self, data, request_body):
         mongo_helper = self.mongo_wrapper
         return data
