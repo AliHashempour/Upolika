@@ -20,7 +20,7 @@ class BaseMongoWrapper:
     def update(self, table_name: str, _id, doc: dict):
         """updating record"""
 
-    def delete(self, table_name: str, _id, doc: dict):
+    def delete(self, table_name: str, doc: dict):
         """deleting record"""
 
 

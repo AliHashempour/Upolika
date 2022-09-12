@@ -49,12 +49,10 @@ class MongoWrapper(BaseMongoWrapper):
         res = collection.update_one(query, doc)
         return res
 
-    def delete(self, table_name, _id, doc):
+    def delete(self, table_name, query: dict):
         collection = self.get_collection(table_name)
-        doc = {"$set": doc}
-        query = {"id": _id}
-        res = collection.delete_one(query, doc)
-        return res
+        res = collection.delete_one(query)
+        return res.acknowledged
 
     def get_collection(self, table_name):
         collection = self.db_connection[table_name]
