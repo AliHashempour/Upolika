@@ -3,7 +3,7 @@ from app.helpers.base_helpers import BaseLogic
 from app.helpers.config_helper import ConfigHelper
 from app.helpers.mongo_helper import MongoWrapper
 from app.definitions import account_definition, user_definition, transaction_definition
-from app.helpers.schema_helper import *
+from app.helpers.policy_helper import *
 
 
 class ManagementLogic(BaseLogic):
@@ -13,7 +13,9 @@ class ManagementLogic(BaseLogic):
         self.cfg_helper = ConfigHelper()
         self.user_table_name = self.cfg_helper.get_config("USER")["table_name"]
 
-    def sign_up(self, data, request_body):
+    def sign_up(self, request_body):
+        data = request_body['data']
+
         check_schema(data, user_definition.user_schema)
         processed_data = preprocess(data, user_definition.user_schema)
 
@@ -28,7 +30,8 @@ class ManagementLogic(BaseLogic):
             }
         return message
 
-    def login_user(self, data, request_body):
+    def login_user(self, request_body):
+        data = request_body['data']
         required_fields = ['username', 'password']
 
         check_schema(data, user_definition.user_schema, required_fields)
@@ -47,7 +50,10 @@ class ManagementLogic(BaseLogic):
             }
             return message
 
-    def add_user(self, data, request_body):
+    def add_user(self, request_body):
+        data = request_body['data']
+
+        check_role(request_body, for_admin=True)
         check_schema(data, user_definition.user_schema)
         processed_data = preprocess(data, user_definition.user_schema)
 
@@ -62,30 +68,37 @@ class ManagementLogic(BaseLogic):
             }
         return message
 
-    def remove_user(self, data, request_body):
-        mongo_helper = self.mongo_wrapper
+    def remove_user(self, request_body):
+        data = request_body['data']
+
         return data
 
-    def select_all_users(self, data, request_body):
-        mongo_helper = self.mongo_wrapper
+    def select_all_users(self, request_body):
+        data = request_body['data']
+
         return data
 
-    def add_account(self, data, request_body):
-        mongo_helper = self.mongo_wrapper
+    def add_account(self, request_body):
+        data = request_body['data']
+
         return data
 
-    def remove_account(self, data, request_body):
-        mongo_helper = self.mongo_wrapper
+    def remove_account(self, request_body):
+        data = request_body['data']
+
         return data
 
-    def select_all_accounts(self, data, request_body):
-        mongo_helper = self.mongo_wrapper
+    def select_all_accounts(self, request_body):
+        data = request_body['data']
+
         return data
 
-    def find_account(self, data, request_body):
-        mongo_helper = self.mongo_wrapper
+    def find_account(self, request_body):
+        data = request_body['data']
+
         return data
 
-    def update_user(self, data, request_body):
-        mongo_helper = self.mongo_wrapper
+    def update_user(self, request_body):
+        data = request_body['data']
+
         return data
