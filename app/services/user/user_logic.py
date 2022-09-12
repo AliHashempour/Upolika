@@ -52,7 +52,6 @@ class UserLogic(BaseLogic):
     def deposit(self, request_body):
         data = request_body['data']
         required_fields = ['owner_national_id', 'serial', 'amount']
-
         check_schema(data, account_definition.account_schema, required_fields)
 
         res = self.mongo_wrapper.select(self.account_table_name, {'owner_national_id': data['owner_national_id'],
@@ -63,7 +62,7 @@ class UserLogic(BaseLogic):
             account = res[0]
             account['balance'] += data['amount']
 
-            account['transaction_list'] = self.add_transaction(account, data)
+            account['transaction_list'] = self.add_transaction(account, data, 'deposit')
 
             self.mongo_wrapper.update(self.account_table_name, {'owner_national_id': data['owner_national_id'],
                                                                 'serial': data['serial']}, account)
@@ -75,7 +74,26 @@ class UserLogic(BaseLogic):
 
     def withdraw(self, request_body):
         data = request_body['data']
-        pass
+        required_fields = ['owner_national_id', 'serial', 'amount']
+        check_schema(data, account_definition.account_schema, required_fields)
+
+        res = self.mongo_wrapper.select(self.account_table_name, {'owner_national_id': data['owner_national_id'],
+                                                                  'serial': data['serial']})
+        if len(res) == 0:
+            raise AccountNotFound()
+        else:
+            account = res[0]
+            account['balance'] -= data['amount']
+
+            account['transaction_list'] = self.add_transaction(account, data, 'withdraw')
+
+            self.mongo_wrapper.update(self.account_table_name, {'owner_national_id': data['owner_national_id'],
+                                                                'serial': data['serial']}, account)
+            message = {
+                'is_successful': True,
+                'message': 'Withdraw successful',
+            }
+            return message
 
     def transfer(self, request_body):
         data = request_body['data']
@@ -94,12 +112,12 @@ class UserLogic(BaseLogic):
         pass
 
     @staticmethod
-    def add_transaction(account, data):
+    def add_transaction(account, data, transaction_type):
         account_transactions = account['transaction_list']
         transaction_record = {
             'amount': data['amount'],
             'owner_account_serial': data['serial'],
-            'transaction_type': 'deposit',
+            'transaction_type': transaction_type,
             'transaction_date': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
         account_transactions.append(transaction_record)
