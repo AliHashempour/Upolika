@@ -44,11 +44,16 @@ def check_full_schema(data, schema):
 
 
 def preprocess(data, schema):
+    for field in schema.keys():
+        if field not in data.keys():
+            data[field] = None
+
     for field in data:
         if data[field] is None and field in schema.keys() and "_null_value" in schema[field].keys():
             data[field] = schema[field]["_null_value"]
         if field in schema.keys() and "_type" in schema[field].keys():
             data[field] = schema[field]["_type"](data[field])
+
     return data
 
 
