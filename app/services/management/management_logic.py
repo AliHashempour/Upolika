@@ -126,14 +126,17 @@ class ManagementLogic(BaseLogic):
         check_role(request_body, for_admin=True)
         check_schema(data, user_definition.user_schema)
 
-        acknowledged = self.mongo_wrapper.delete(self.account_table_name, data)
-        if acknowledged:
-            message = {
-                'is_successful': True,
-                'message': 'Account removed successfully',
-            }
-
-            return message
+        account = self.mongo_wrapper.select(self.account_table_name, data)
+        if len(account) == 0:
+            raise AccountNotFound()
+        else:
+            acknowledged = self.mongo_wrapper.delete(self.account_table_name, data)
+            if acknowledged:
+                message = {
+                    'is_successful': True,
+                    'message': 'Account removed successfully',
+                }
+                return message
 
     def select_all_accounts(self, request_body):
         data = request_body['data']
