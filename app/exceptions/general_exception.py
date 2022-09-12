@@ -18,6 +18,11 @@ class UserExists(AppException):
         super(UserExists, self).__init__("User with this information already exists.")
 
 
+class AccountExists(AppException):
+    def __init__(self):
+        super(AccountExists, self).__init__("Account with this information already exists.")
+
+
 class InvalidUser(AppException):
     def __init__(self):
         super(InvalidUser, self).__init__("User with this information does not exist.")

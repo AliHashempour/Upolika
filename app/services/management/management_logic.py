@@ -90,7 +90,10 @@ class ManagementLogic(BaseLogic):
         check_role(request_body, for_admin=True)
 
         users = self.mongo_wrapper.select(self.user_table_name, data)
-        message = {'is_successful': True, 'total_users': len(users), 'result': users}
+        message = {
+            'is_successful': True,
+            'total_users': len(users),
+            'result': users}
 
         return message
 
@@ -103,7 +106,9 @@ class ManagementLogic(BaseLogic):
 
         account_existence = self.mongo_wrapper.exists(self.account_table_name, processed_data)
 
-        if account_existence is False:
+        if account_existence is True:
+            raise AccountExists()
+        else:
             self.mongo_wrapper.insert(self.account_table_name, processed_data)
             message = {
                 'is_successful': True,
@@ -130,7 +135,15 @@ class ManagementLogic(BaseLogic):
     def select_all_accounts(self, request_body):
         data = request_body['data']
 
-        return data
+        check_role(request_body, for_admin=True)
+
+        accounts = self.mongo_wrapper.select(self.account_table_name, data)
+        message = {
+            'is_successful': True,
+            'total_accounts': len(accounts),
+            'result': accounts}
+
+        return message
 
     def find_account(self, request_body):
         data = request_body['data']
