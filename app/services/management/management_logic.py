@@ -12,6 +12,7 @@ class ManagementLogic(BaseLogic):
         self.mongo_wrapper = MongoWrapper()
         self.cfg_helper = ConfigHelper()
         self.user_table_name = self.cfg_helper.get_config("USER")["table_name"]
+        self.account_table_name = self.cfg_helper.get_config("ACCOUNT")["table_name"]
 
     def sign_up(self, request_body):
         data = request_body['data']
@@ -96,12 +97,35 @@ class ManagementLogic(BaseLogic):
     def add_account(self, request_body):
         data = request_body['data']
 
-        return data
+        check_role(request_body, for_admin=True)
+        check_schema(data, account_definition.account_schema)
+        processed_data = preprocess(data, account_definition.account_schema)
+
+        account_existence = self.mongo_wrapper.exists(self.account_table_name, processed_data)
+
+        if account_existence is False:
+            self.mongo_wrapper.insert(self.account_table_name, processed_data)
+            message = {
+                'is_successful': True,
+                'message': 'Account added successfully',
+            }
+
+            return message
 
     def remove_account(self, request_body):
         data = request_body['data']
 
-        return data
+        check_role(request_body, for_admin=True)
+        check_schema(data, user_definition.user_schema)
+
+        acknowledged = self.mongo_wrapper.delete(self.account_table_name, data)
+        if acknowledged:
+            message = {
+                'is_successful': True,
+                'message': 'Account removed successfully',
+            }
+
+            return message
 
     def select_all_accounts(self, request_body):
         data = request_body['data']
