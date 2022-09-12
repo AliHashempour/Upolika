@@ -23,5 +23,15 @@ account_schema = {
         "_type": str,
         "_null_value": None,
         'is_required': True
+    },
+    "balance": {
+        "_type": float,
+        "_null_value": 1000.0,
+        'is_required': True
+    },
+    'transaction_list': {
+        "_type": list,
+        "_null_value": [],
+        'is_required': False
     }
 }
