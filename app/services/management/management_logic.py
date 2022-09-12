@@ -75,14 +75,17 @@ class ManagementLogic(BaseLogic):
         check_role(request_body, for_admin=True)
         check_schema(data, user_definition.user_schema)
 
-        acknowledged = self.mongo_wrapper.delete(self.user_table_name, data)
-        if acknowledged:
-            message = {
-                'is_successful': True,
-                'message': 'User removed successfully',
-            }
-
-            return message
+        user = self.mongo_wrapper.select(self.user_table_name, data)
+        if len(user) == 0:
+            raise UserNotFound()
+        else:
+            acknowledged = self.mongo_wrapper.delete(self.user_table_name, data)
+            if acknowledged:
+                message = {
+                    'is_successful': True,
+                    'message': 'User removed successfully',
+                }
+                return message
 
     def select_all_users(self, request_body):
         data = request_body['data']
@@ -147,10 +150,39 @@ class ManagementLogic(BaseLogic):
 
     def find_account(self, request_body):
         data = request_body['data']
+        required_fields = ['serial_number']
+        check_role(request_body, for_admin=True)
+        check_schema(data, account_definition.account_schema, required_fields)
 
-        return data
+        acc = self.mongo_wrapper.select(self.account_table_name, data)
+        if len(acc) == 0:
+            raise AccountNotFound()
+        else:
+            message = {
+                'is_successful': True,
+                'message': 'Account found successfully',
+                'account': acc[0]
+            }
+            return message
 
     def update_user(self, request_body):
         data = request_body['data']
+        national_id = data['national_id']
 
-        return data
+        check_role(request_body, for_admin=True)
+        check_schema(data, user_definition.user_schema)
+        preprocessed_data = preprocess(data, user_definition.user_schema)
+
+        user = self.mongo_wrapper.select(self.user_table_name, {'national_id': national_id})
+        if len(user) == 0:
+            raise UserNotFound()
+        else:
+            acknowledged = self.mongo_wrapper.update(self.user_table_name,
+                                                     {'national_id': national_id},
+                                                     preprocessed_data)
+            if acknowledged:
+                message = {
+                    'is_successful': True,
+                    'message': 'User updated successfully',
+                }
+                return message
