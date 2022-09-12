@@ -40,13 +40,12 @@ class UserLogic(BaseLogic):
         if len(account) == 0:
             raise AccountNotFound()
         else:
-            acknowledged = self.mongo_wrapper.delete(self.account_table_name, data)
-            if acknowledged:
-                message = {
-                    'is_successful': True,
-                    'message': 'Account removed successfully',
-                }
-                return message
+            self.mongo_wrapper.delete(self.account_table_name, data)
+            message = {
+                'is_successful': True,
+                'message': 'Account removed successfully',
+            }
+            return message
 
     def deposit(self, request_body):
         data = request_body['data']

@@ -79,13 +79,13 @@ class ManagementLogic(BaseLogic):
         if len(user) == 0:
             raise UserNotFound()
         else:
-            acknowledged = self.mongo_wrapper.delete(self.user_table_name, data)
-            if acknowledged:
-                message = {
-                    'is_successful': True,
-                    'message': 'User removed successfully',
-                }
-                return message
+            self.mongo_wrapper.delete(self.user_table_name, data)
+
+            message = {
+                'is_successful': True,
+                'message': 'User removed successfully',
+            }
+            return message
 
     def select_all_users(self, request_body):
         data = request_body['data']
@@ -130,13 +130,13 @@ class ManagementLogic(BaseLogic):
         if len(account) == 0:
             raise AccountNotFound()
         else:
-            acknowledged = self.mongo_wrapper.delete(self.account_table_name, data)
-            if acknowledged:
-                message = {
-                    'is_successful': True,
-                    'message': 'Account removed successfully',
-                }
-                return message
+            self.mongo_wrapper.delete(self.account_table_name, data)
+
+            message = {
+                'is_successful': True,
+                'message': 'Account removed successfully',
+            }
+            return message
 
     def select_all_accounts(self, request_body):
         data = request_body['data']
