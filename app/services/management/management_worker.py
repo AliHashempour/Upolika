@@ -65,6 +65,8 @@ class ManagementSelectWorker(BaseWorker):
             return self.logic.select_all_accounts(request)
         elif method == "find_account":
             return self.logic.find_account(request)
+        else:
+            raise InvalidFieldName('method')
 
 
 class ManagementInsertWorker(BaseWorker):
@@ -81,6 +83,8 @@ class ManagementInsertWorker(BaseWorker):
             return self.logic.add_user(request)
         elif method == "add_account":
             return self.logic.add_account(request)
+        else:
+            raise InvalidFieldName('method')
 
 
 class ManagementUpdateWorker(BaseWorker):
@@ -92,6 +96,8 @@ class ManagementUpdateWorker(BaseWorker):
 
         if method == "update_user":
             return self.logic.update_user(request)
+        else:
+            raise InvalidFieldName('method')
 
 
 class ManagementDeleteWorker(BaseWorker):
@@ -106,3 +112,5 @@ class ManagementDeleteWorker(BaseWorker):
             return self.logic.delete_user(request)
         elif method == "delete_account":
             return self.logic.delete_account(request)
+        else:
+            raise InvalidFieldName('method')

@@ -60,6 +60,8 @@ class UserSelectWorker(BaseWorker):
             return self.logic.select_accounts(request)
         elif method == "get_user":
             return self.logic.get_user(request)
+        else:
+            raise InvalidFieldName('method')
 
 
 class UserInsertWorker(BaseWorker):
@@ -70,6 +72,8 @@ class UserInsertWorker(BaseWorker):
         method = request["method"]
         if method == "add_account":
             return self.logic.add_account(request)
+        else:
+            raise InvalidFieldName('method')
 
 
 class UserUpdateWorker(BaseWorker):
@@ -83,6 +87,8 @@ class UserUpdateWorker(BaseWorker):
             return self.logic.deposit(request)
         elif method == "withdraw":
             return self.logic.withdraw(request)
+        else:
+            raise InvalidFieldName('method')
 
 
 class UserDeleteWorker(BaseWorker):
@@ -93,3 +99,5 @@ class UserDeleteWorker(BaseWorker):
         method = request["method"]
         if method == "remove_account":
             return self.logic.remove_account(request)
+        else:
+            raise InvalidFieldName('method')

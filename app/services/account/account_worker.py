@@ -56,6 +56,8 @@ class AccountSelectWorker(BaseWorker):
             return self.logic.get_transactions(request)
         elif method == "get_account":
             return self.logic.get_account(request)
+        else:
+            raise InvalidFieldName('method')
 
 
 class AccountInsertWorker(BaseWorker):
@@ -66,6 +68,8 @@ class AccountInsertWorker(BaseWorker):
         method = request["method"]
         if method == "add_transaction":
             return self.logic.add_transaction(request)
+        else:
+            raise InvalidFieldName('method')
 
 
 class AccountUpdateWorker(BaseWorker):
@@ -76,6 +80,8 @@ class AccountUpdateWorker(BaseWorker):
         method = request["method"]
         if method == "update_balance":
             return self.logic.update_balance(request)
+        else:
+            raise InvalidFieldName('method')
 
 
 class AccountDeleteWorker(BaseWorker):
@@ -86,3 +92,5 @@ class AccountDeleteWorker(BaseWorker):
         method = request["method"]
         if method == "delete_account":
             return self.logic.delete_account(request)
+        else:
+            raise InvalidFieldName('method')
