@@ -2,6 +2,7 @@ import json
 
 from app.helpers.base_helpers import BaseWorker, BaseServiceWrapper
 from app.services.user.user_logic import UserLogic
+from app.exceptions.general_exception import *
 
 
 class UserWorkerWrapper(BaseServiceWrapper):
@@ -18,14 +19,28 @@ class UserWorkerWrapper(BaseServiceWrapper):
         request = json.loads(request_body.decode("utf-8"))
         method_type = request["method_type"]
 
-        if method_type == "select":
-            return self.user_select_worker.serve_request(request)
-        elif method_type == "insert":
-            return self.user_insert_worker.serve_request(request)
-        elif method_type == "update":
-            return self.user_update_worker.serve_request(request)
-        elif method_type == "delete":
-            return self.user_delete_worker.serve_request(request)
+        try:
+            if method_type == "select":
+                return self.user_select_worker.serve_request(request)
+            elif method_type == "insert":
+                return self.user_insert_worker.serve_request(request)
+            elif method_type == "update":
+                return self.user_update_worker.serve_request(request)
+            elif method_type == "delete":
+                return self.user_delete_worker.serve_request(request)
+
+        except AccountExists as e:
+            return {'is_successful': False, 'error_message': str(e)}
+        except AccountNotFound as e:
+            return {'is_successful': False, 'error_message': str(e)}
+        except InsufficientBalance as e:
+            return {'is_successful': False, 'error_message': str(e)}
+        except UserNotFound as e:
+            return {'is_successful': False, 'error_message': str(e)}
+        except AppException as e:
+            return {'is_successful': False, 'error_message': str(e)}
+        except Exception as e:
+            return {'is_successful': False, 'error_message': str(e)}
 
 
 class UserSelectWorker(BaseWorker):
