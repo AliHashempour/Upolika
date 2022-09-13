@@ -43,11 +43,13 @@ def select_request():
 @app.route('/api/v1/insert_request', methods=['post'])
 def insert_request():
     try:
+        request_body = request.json
+        res = execute_request(request.json)
         return {
             "is_successful": True,
             "error_description": None,
-            "data": None,
-            "request": request.json
+            "data": request_body['data'],
+            "request": res
         }
     except NotAuthorizedException as e:
         return {"is_successful": False, "error_description": str(e), "response": None}
@@ -58,11 +60,13 @@ def insert_request():
 @app.route('/api/v1/update_request', methods=['post'])
 def update_request():
     try:
+        request_body = request.json
+        res = execute_request(request.json)
         return {
             "is_successful": True,
             "error_description": None,
-            "data": None,
-            "request": request.json
+            "data": request_body['data'],
+            "request": res
         }
     except NotAuthorizedException as e:
         return {"is_successful": False, "error_description": str(e), "response": None}
@@ -73,11 +77,13 @@ def update_request():
 @app.route('/api/v1/delete_request', methods=['post'])
 def delete_request():
     try:
+        request_body = request.json
+        res = execute_request(request.json)
         return {
             "is_successful": True,
             "error_description": None,
-            "data": None,
-            "request": request.json
+            "data": request_body['data'],
+            "request": res
         }
     except NotAuthorizedException as e:
         return {"is_successful": False, "error_description": str(e), "response": None}
@@ -98,7 +104,6 @@ def sign_up():
 
         return {
             "is_successful": True,
-           
             "error_description": None,
             "data": data,
             "response": response
@@ -121,7 +126,6 @@ def login():
 
         return {
             "is_successful": True,
-            
             "error_description": None,
             "data": data,
             "response": response
