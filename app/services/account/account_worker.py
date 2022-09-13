@@ -30,19 +30,19 @@ class AccountWorkerWrapper(BaseServiceWrapper):
                 return self.account_delete_worker.serve_request(request)
 
         except AccountExists as e:
-            return {'is_successful': False, 'error_message': str(e)}
+            return {'is_successful': False, 'title': 'Account Exists', 'error_message': str(e)}
         except AccountNotFound as e:
-            return {'is_successful': False, 'error_message': str(e)}
+            return {'is_successful': False, 'title': 'Account Not Found', 'error_message': str(e)}
         except UserNotFound as e:
-            return {'is_successful': False, 'error_message': str(e)}
+            return {'is_successful': False, 'title': 'User Not Found', 'error_message': str(e)}
         except InvalidFieldName as e:
-            return {'is_successful': False, 'error_message': str(e)}
+            return {'is_successful': False, 'title': 'Invalid Field Name', 'error_message': str(e)}
         except RequiredFieldError as e:
-            return {'is_successful': False, 'error_message': str(e)}
+            return {'is_successful': False, 'title': 'Required Field Error', 'error_message': str(e)}
         except AppException as e:
-            return {'is_successful': False, 'error_message': str(e)}
+            return {'is_successful': False, 'title': 'App Exception', 'error_message': str(e)}
         except Exception as e:
-            return {'is_successful': False, 'error_message': str(e)}
+            return {'is_successful': False, 'title': 'Exception', 'error_message': str(e)}
 
 
 class AccountSelectWorker(BaseWorker):
