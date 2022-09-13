@@ -37,6 +37,12 @@ class ManagementWorkerWrapper(BaseServiceWrapper):
             return {'is_successful': False, 'error_message': str(e)}
         except AccountNotFound as e:
             return {'is_successful': False, 'error_message': str(e)}
+        except InvalidFieldName as e:
+            return {'is_successful': False, 'error_message': str(e)}
+        except RequiredFieldError as e:
+            return {'is_successful': False, 'error_message': str(e)}
+        except PermissionDenied as e:
+            return {'is_successful': False, 'error_message': str(e)}
         except AppException as e:
             return {'is_successful': False, 'error_message': str(e)}
         except Exception as e:
