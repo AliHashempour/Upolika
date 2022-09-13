@@ -33,11 +33,6 @@ class AccountNotFound(AppException):
         super(AccountNotFound, self).__init__("Account with this information does not exists.")
 
 
-class InvalidUser(AppException):
-    def __init__(self):
-        super(InvalidUser, self).__init__("User with this information does not exist.")
-
-
 class PermissionDenied(AppException):
     def __init__(self, role):
         super(PermissionDenied, self).__init__("You have to be a {} to perform this action.".format(role))
