@@ -40,4 +40,5 @@ class PermissionDenied(AppException):
 
 class InsufficientBalance(AppException):
     def __init__(self):
-        super(InsufficientBalance, self).__init__("Insufficient balance.")
+        super(InsufficientBalance, self).__init__(
+            "the src account does not have enough balance to perform this action.")
