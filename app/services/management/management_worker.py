@@ -19,14 +19,28 @@ class ManagementWorkerWrapper(BaseServiceWrapper):
         request = json.loads(request_body.decode("utf-8"))
         method_type = request["method_type"]
 
-        if method_type == "select":
-            return self.transaction_select_worker.serve_request(request)
-        elif method_type == "insert":
-            return self.transaction_insert_worker.serve_request(request)
-        elif method_type == "update":
-            return self.transaction_update_worker.serve_request(request)
-        elif method_type == "delete":
-            return self.transaction_delete_worker.serve_request(request)
+        try:
+            if method_type == "select":
+                return self.transaction_select_worker.serve_request(request)
+            elif method_type == "insert":
+                return self.transaction_insert_worker.serve_request(request)
+            elif method_type == "update":
+                return self.transaction_update_worker.serve_request(request)
+            elif method_type == "delete":
+                return self.transaction_delete_worker.serve_request(request)
+
+        except UserExists as e:
+            return {'is_successful': False, 'error_message': str(e)}
+        except UserNotFound as e:
+            return {'is_successful': False, 'error_message': str(e)}
+        except AccountExists as e:
+            return {'is_successful': False, 'error_message': str(e)}
+        except AccountNotFound as e:
+            return {'is_successful': False, 'error_message': str(e)}
+        except AppException as e:
+            return {'is_successful': False, 'error_message': str(e)}
+        except Exception as e:
+            return {'is_successful': False, 'error_message': str(e)}
 
 
 class ManagementSelectWorker(BaseWorker):
@@ -34,29 +48,17 @@ class ManagementSelectWorker(BaseWorker):
         super(ManagementSelectWorker, self).__init__(logic=logic)
 
     def serve_request(self, request):
-        try:
 
-            method = request["method"]
+        method = request["method"]
 
-            if method == "login":
-                return self.logic.login_user(request)
-            elif method == "select_all_users":
-                return self.logic.select_all_users(request)
-            elif method == "select_all_accounts":
-                return self.logic.select_all_accounts(request)
-            elif method == "find_account":
-                return self.logic.find_account(request)
-
-        except UserExists as e:
-            return {'is_successful': False, 'error_message': str(e)}
-        except UserNotFound as e:
-            return {'is_successful': False, 'error_message': str(e)}
-        except AccountExists as e:
-            return {'is_successful': False, 'error_message': str(e)}
-        except AccountNotFound as e:
-            return {'is_successful': False, 'error_message': str(e)}
-        except AppException as e:
-            return {'is_successful': False, 'error_message': str(e)}
+        if method == "login":
+            return self.logic.login_user(request)
+        elif method == "select_all_users":
+            return self.logic.select_all_users(request)
+        elif method == "select_all_accounts":
+            return self.logic.select_all_accounts(request)
+        elif method == "find_account":
+            return self.logic.find_account(request)
 
 
 class ManagementInsertWorker(BaseWorker):
@@ -64,27 +66,15 @@ class ManagementInsertWorker(BaseWorker):
         super(ManagementInsertWorker, self).__init__(logic=logic)
 
     def serve_request(self, request):
-        try:
 
-            method = request["method"]
+        method = request["method"]
 
-            if method == "sign_up":
-                return self.logic.sign_up(request)
-            elif method == "add_user":
-                return self.logic.add_user(request)
-            elif method == "add_account":
-                return self.logic.add_account(request)
-
-        except UserExists as e:
-            return {'is_successful': False, 'error_message': str(e)}
-        except UserNotFound as e:
-            return {'is_successful': False, 'error_message': str(e)}
-        except AccountExists as e:
-            return {'is_successful': False, 'error_message': str(e)}
-        except AccountNotFound as e:
-            return {'is_successful': False, 'error_message': str(e)}
-        except AppException as e:
-            return {'is_successful': False, 'error_message': str(e)}
+        if method == "sign_up":
+            return self.logic.sign_up(request)
+        elif method == "add_user":
+            return self.logic.add_user(request)
+        elif method == "add_account":
+            return self.logic.add_account(request)
 
 
 class ManagementUpdateWorker(BaseWorker):
@@ -92,23 +82,10 @@ class ManagementUpdateWorker(BaseWorker):
         super(ManagementUpdateWorker, self).__init__(logic=logic)
 
     def serve_request(self, request):
-        try:
+        method = request["method"]
 
-            method = request["method"]
-
-            if method == "update_user":
-                return self.logic.update_user(request)
-
-        except UserExists as e:
-            return {'is_successful': False, 'error_message': str(e)}
-        except UserNotFound as e:
-            return {'is_successful': False, 'error_message': str(e)}
-        except AccountExists as e:
-            return {'is_successful': False, 'error_message': str(e)}
-        except AccountNotFound as e:
-            return {'is_successful': False, 'error_message': str(e)}
-        except AppException as e:
-            return {'is_successful': False, 'error_message': str(e)}
+        if method == "update_user":
+            return self.logic.update_user(request)
 
 
 class ManagementDeleteWorker(BaseWorker):
@@ -116,21 +93,10 @@ class ManagementDeleteWorker(BaseWorker):
         super(ManagementDeleteWorker, self).__init__(logic=logic)
 
     def serve_request(self, request):
-        try:
-            method = request["method"]
 
-            if method == "delete_user":
-                return self.logic.delete_user(request)
-            elif method == "delete_account":
-                return self.logic.delete_account(request)
+        method = request["method"]
 
-        except UserExists as e:
-            return {'is_successful': False, 'error_message': str(e)}
-        except UserNotFound as e:
-            return {'is_successful': False, 'error_message': str(e)}
-        except AccountExists as e:
-            return {'is_successful': False, 'error_message': str(e)}
-        except AccountNotFound as e:
-            return {'is_successful': False, 'error_message': str(e)}
-        except AppException as e:
-            return {'is_successful': False, 'error_message': str(e)}
+        if method == "delete_user":
+            return self.logic.delete_user(request)
+        elif method == "delete_account":
+            return self.logic.delete_account(request)
