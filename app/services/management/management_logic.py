@@ -40,7 +40,7 @@ class ManagementLogic(BaseLogic):
 
         record = self.mongo_wrapper.select(self.user_table_name, processed_data)
         if len(record) == 0:
-            raise InvalidUser()
+            raise UserNotFound()
         else:
             user_token = str(uuid.uuid4())  # todo set user token in redis in api
             message = {

@@ -47,16 +47,16 @@ class ManagementSelectWorker(BaseWorker):
             elif method == "find_account":
                 return self.logic.find_account(request)
 
-        except InvalidFieldName as e:
-            return {"is_successful": False, "exception_message": str(e)}
-        except RequiredFieldError as e:
-            return {"is_successful": False, "exception_message": str(e)}
-        except InvalidUser as e:
-            return {"is_successful": False, "exception_message": str(e)}
         except UserExists as e:
-            return {"is_successful": False, "exception_message": str(e)}
+            return {'is_successful': False, 'error_message': str(e)}
+        except UserNotFound as e:
+            return {'is_successful': False, 'error_message': str(e)}
+        except AccountExists as e:
+            return {'is_successful': False, 'error_message': str(e)}
+        except AccountNotFound as e:
+            return {'is_successful': False, 'error_message': str(e)}
         except AppException as e:
-            return {"is_successful": False, "exception_message": str(e)}
+            return {'is_successful': False, 'error_message': str(e)}
 
 
 class ManagementInsertWorker(BaseWorker):
@@ -75,16 +75,16 @@ class ManagementInsertWorker(BaseWorker):
             elif method == "add_account":
                 return self.logic.add_account(request)
 
-        except InvalidFieldName as e:
-            return {"is_successful": False, "exception_message": str(e)}
-        except RequiredFieldError as e:
-            return {"is_successful": False, "exception_message": str(e)}
-        except InvalidUser as e:
-            return {"is_successful": False, "exception_message": str(e)}
         except UserExists as e:
-            return {"is_successful": False, "exception_message": str(e)}
+            return {'is_successful': False, 'error_message': str(e)}
+        except UserNotFound as e:
+            return {'is_successful': False, 'error_message': str(e)}
+        except AccountExists as e:
+            return {'is_successful': False, 'error_message': str(e)}
+        except AccountNotFound as e:
+            return {'is_successful': False, 'error_message': str(e)}
         except AppException as e:
-            return {"is_successful": False, "exception_message": str(e)}
+            return {'is_successful': False, 'error_message': str(e)}
 
 
 class ManagementUpdateWorker(BaseWorker):
@@ -99,16 +99,16 @@ class ManagementUpdateWorker(BaseWorker):
             if method == "update_user":
                 return self.logic.update_user(request)
 
-        except InvalidFieldName as e:
-            return {"is_successful": False, "exception_message": str(e)}
-        except RequiredFieldError as e:
-            return {"is_successful": False, "exception_message": str(e)}
-        except InvalidUser as e:
-            return {"is_successful": False, "exception_message": str(e)}
         except UserExists as e:
-            return {"is_successful": False, "exception_message": str(e)}
+            return {'is_successful': False, 'error_message': str(e)}
+        except UserNotFound as e:
+            return {'is_successful': False, 'error_message': str(e)}
+        except AccountExists as e:
+            return {'is_successful': False, 'error_message': str(e)}
+        except AccountNotFound as e:
+            return {'is_successful': False, 'error_message': str(e)}
         except AppException as e:
-            return {"is_successful": False, "exception_message": str(e)}
+            return {'is_successful': False, 'error_message': str(e)}
 
 
 class ManagementDeleteWorker(BaseWorker):
@@ -124,13 +124,13 @@ class ManagementDeleteWorker(BaseWorker):
             elif method == "delete_account":
                 return self.logic.delete_account(request)
 
-        except InvalidFieldName as e:
-            return {"is_successful": False, "exception_message": str(e)}
-        except RequiredFieldError as e:
-            return {"is_successful": False, "exception_message": str(e)}
-        except InvalidUser as e:
-            return {"is_successful": False, "exception_message": str(e)}
         except UserExists as e:
-            return {"is_successful": False, "exception_message": str(e)}
+            return {'is_successful': False, 'error_message': str(e)}
+        except UserNotFound as e:
+            return {'is_successful': False, 'error_message': str(e)}
+        except AccountExists as e:
+            return {'is_successful': False, 'error_message': str(e)}
+        except AccountNotFound as e:
+            return {'is_successful': False, 'error_message': str(e)}
         except AppException as e:
-            return {"is_successful": False, "exception_message": str(e)}
+            return {'is_successful': False, 'error_message': str(e)}
