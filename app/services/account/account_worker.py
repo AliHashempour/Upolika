@@ -33,14 +33,12 @@ class AccountSelectWorker(BaseWorker):
         super(AccountSelectWorker, self).__init__(logic=logic)
 
     def serve_request(self, request):
-        data = request["data"]
+
         method = request["method"]
         if method == "get_transactions":
-            return self.logic.get_transactions(data)
+            return self.logic.get_transactions(request)
         elif method == "get_account":
-            return self.logic.get_account(data)
-
-        return data
+            return self.logic.get_account(request)
 
 
 class AccountInsertWorker(BaseWorker):
@@ -48,12 +46,9 @@ class AccountInsertWorker(BaseWorker):
         super(AccountInsertWorker, self).__init__(logic=logic)
 
     def serve_request(self, request):
-        data = request["data"]
         method = request["method"]
         if method == "add_transaction":
-            return self.logic.add_transaction(data)
-
-        return data
+            return self.logic.add_transaction(request)
 
 
 class AccountUpdateWorker(BaseWorker):
@@ -61,12 +56,9 @@ class AccountUpdateWorker(BaseWorker):
         super(AccountUpdateWorker, self).__init__(logic=logic)
 
     def serve_request(self, request):
-        data = request["data"]
         method = request["method"]
         if method == "update_balance":
-            return self.logic.update_balance(data)
-
-        return data
+            return self.logic.update_balance(request)
 
 
 class AccountDeleteWorker(BaseWorker):
@@ -74,9 +66,6 @@ class AccountDeleteWorker(BaseWorker):
         super(AccountDeleteWorker, self).__init__(logic=logic)
 
     def serve_request(self, request):
-        data = request["data"]
         method = request["method"]
         if method == "delete_account":
-            return self.logic.delete_account(data)
-
-        return data
+            return self.logic.delete_account(request)
