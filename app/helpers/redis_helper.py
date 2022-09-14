@@ -12,7 +12,7 @@ class RedisConfig:
         self.cfg_helper = ConfigHelper()
         ips = self.cfg_helper.get("REDIS", "host").split(',')[0]
         port = self.cfg_helper.get("REDIS", "port").split(',')[0]
-        self.redis_conn = redis.Redis(host=ips, port=port, db=0)
+        self.redis_conn = redis.Redis(host=ips, port=port)
 
 
 class RedisWrapper(BaseRedisWrapper):
@@ -25,8 +25,8 @@ class RedisWrapper(BaseRedisWrapper):
     def get(self, key):
         return self.redis_client.get(key)
 
-    def set(self, key, value):
-        return self.redis_client.set(key, value)
+    def set(self, key, value, expire=3600):
+        return self.redis_client.set(key, value, ex=expire)
 
     def delete(self, key):
         return self.redis_client.delete(key)
