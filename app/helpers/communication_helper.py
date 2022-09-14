@@ -1,12 +1,12 @@
 import json
 
-from app.helpers import config_helper, queue_helper
+from app.helpers import config_helper, rabbit_helper
 
 
 def send_rpc_message(rabbit_host, port, queue_name, request_body):
-    client = queue_helper.RpcClient(rabbit_server_host=rabbit_host,
-                                    port=port,
-                                    queue_name=queue_name)
+    client = rabbit_helper.RpcClient(rabbit_server_host=rabbit_host,
+                                     port=port,
+                                     queue_name=queue_name)
 
     message = json.dumps(request_body)
     resp = client.call(message)

@@ -1,7 +1,7 @@
 import time
 
 from app.helpers import config_helper
-from app.helpers.queue_helper import RpcServer
+from app.helpers.rabbit_helper import RpcServer
 from app.services.account.account_worker import AccountWorkerWrapper
 
 if __name__ == "__main__":
