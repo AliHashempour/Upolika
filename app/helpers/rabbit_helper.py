@@ -1,3 +1,4 @@
+import json
 import uuid
 
 import pika
@@ -71,11 +72,11 @@ class RpcServer:
     def on_request(self, ch, method, props, body):
         worker = self.worker
         response = worker.wrap(body)
-
+        response = json.dumps(response)
         ch.basic_publish(exchange='',
                          routing_key=props.reply_to,
                          properties=pika.BasicProperties(correlation_id=props.correlation_id),
-                         body=str(response))
+                         body=response)
         ch.basic_ack(delivery_tag=method.delivery_tag)
         # print("replied message: ", response, ", callback_queue: ", props.reply_to, ", corr_id: ",
         # props.correlation_id)
