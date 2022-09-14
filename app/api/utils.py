@@ -11,7 +11,7 @@ def check_token(request_body):
     redis_helper = RedisWrapper()
     token_existence = redis_helper.exists(token)
     if not token_existence:
-        raise NotAuthorizedException()
+        raise NotAuthorized()
 
 
 def check_tag(request_body):
@@ -20,7 +20,7 @@ def check_tag(request_body):
 
     config_key = index.upper()
     if not cfg_helper.has_tag(config_key):
-        raise InvalidInputException("SERVICE", index)
+        raise InvalidInput("SERVICE", index)
 
 
 def cache_token(token, ip):
