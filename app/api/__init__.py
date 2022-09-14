@@ -4,6 +4,7 @@ import app.api.utils as utils
 from app.helpers import communication_helper, policy_helper
 from app.definitions.request_definition import request_schema
 from app.exceptions.api_exception import *
+from app.exceptions.general_exception import *
 
 app = Flask(__name__)
 CORS(app)
@@ -13,7 +14,7 @@ def execute_request(request_body):
     policy_helper.check_schema(request_body, request_schema)
     permitted_methods = ['sign_up', 'login']
 
-    if request_body['method'] not in permitted_methods:
+    if request_body['action'] not in permitted_methods:
         utils.check_token(request_body)
 
     utils.check_tag(request_body)
@@ -44,15 +45,16 @@ def select_request():
         }
 
     except NotAuthorized as e:
-        return {"is_successful": False, "error_description": str(e), "response": None}
+        return {"is_successful": False, "title": "Not Authorized", "error_description": str(e), "response": None}
     except InvalidInput as e:
-        return {"is_successful": False, "error_description": str(e), "response": None}
+        return {"is_successful": False, "title": "Invalid Input", "error_description": str(e), "response": None}
     except InvalidFieldName as e:
-        return {"is_successful": False, "error_description": str(e), "response": None}
+        return {"is_successful": False, "title": "Invalid Field Name", "error_description": str(e), "response": None}
     except RequiredFieldError as e:
-        return {"is_successful": False, "error_description": str(e), "response": None}
+        return {"is_successful": False, "title": "Required Field Error", "error_description": str(e), "response": None}
     except MethodPermissionDenied as e:
-        return {"is_successful": False, "error_description": str(e), "response": None}
+        return {"is_successful": False, "title": "Method Permission Denied", "error_description": str(e),
+                "response": None}
 
 
 @app.route('/api/v1/insert_request', methods=['post'])
@@ -74,15 +76,16 @@ def insert_request():
         }
 
     except NotAuthorized as e:
-        return {"is_successful": False, "error_description": str(e), "response": None}
+        return {"is_successful": False, "title": "Not Authorized", "error_description": str(e), "response": None}
     except InvalidInput as e:
-        return {"is_successful": False, "error_description": str(e), "response": None}
+        return {"is_successful": False, "title": "Invalid Input", "error_description": str(e), "response": None}
     except InvalidFieldName as e:
-        return {"is_successful": False, "error_description": str(e), "response": None}
+        return {"is_successful": False, "title": "Invalid Field Name", "error_description": str(e), "response": None}
     except RequiredFieldError as e:
-        return {"is_successful": False, "error_description": str(e), "response": None}
+        return {"is_successful": False, "title": "Required Field Error", "error_description": str(e), "response": None}
     except MethodPermissionDenied as e:
-        return {"is_successful": False, "error_description": str(e), "response": None}
+        return {"is_successful": False, "title": "Method Permission Denied", "error_description": str(e),
+                "response": None}
 
 
 @app.route('/api/v1/update_request', methods=['post'])
@@ -104,15 +107,16 @@ def update_request():
         }
 
     except NotAuthorized as e:
-        return {"is_successful": False, "error_description": str(e), "response": None}
+        return {"is_successful": False, "title": "Not Authorized", "error_description": str(e), "response": None}
     except InvalidInput as e:
-        return {"is_successful": False, "error_description": str(e), "response": None}
+        return {"is_successful": False, "title": "Invalid Input", "error_description": str(e), "response": None}
     except InvalidFieldName as e:
-        return {"is_successful": False, "error_description": str(e), "response": None}
+        return {"is_successful": False, "title": "Invalid Field Name", "error_description": str(e), "response": None}
     except RequiredFieldError as e:
-        return {"is_successful": False, "error_description": str(e), "response": None}
+        return {"is_successful": False, "title": "Required Field Error", "error_description": str(e), "response": None}
     except MethodPermissionDenied as e:
-        return {"is_successful": False, "error_description": str(e), "response": None}
+        return {"is_successful": False, "title": "Method Permission Denied", "error_description": str(e),
+                "response": None}
 
 
 @app.route('/api/v1/delete_request', methods=['post'])
@@ -134,24 +138,25 @@ def delete_request():
         }
 
     except NotAuthorized as e:
-        return {"is_successful": False, "error_description": str(e), "response": None}
+        return {"is_successful": False, "title": "Not Authorized", "error_description": str(e), "response": None}
     except InvalidInput as e:
-        return {"is_successful": False, "error_description": str(e), "response": None}
+        return {"is_successful": False, "title": "Invalid Input", "error_description": str(e), "response": None}
     except InvalidFieldName as e:
-        return {"is_successful": False, "error_description": str(e), "response": None}
+        return {"is_successful": False, "title": "Invalid Field Name", "error_description": str(e), "response": None}
     except RequiredFieldError as e:
-        return {"is_successful": False, "error_description": str(e), "response": None}
+        return {"is_successful": False, "title": "Required Field Error", "error_description": str(e), "response": None}
     except MethodPermissionDenied as e:
-        return {"is_successful": False, "error_description": str(e), "response": None}
+        return {"is_successful": False, "title": "Method Permission Denied", "error_description": str(e),
+                "response": None}
 
 
 @app.route('/api/v1/sign_up', methods=['post'])
 def sign_up():
     request_body = request.json
 
-    request_body['table'] = 'management'
-    request_body['method'] = 'insert'
-    request_body['method_type'] = 'sign_up'
+    request_body['method_type'] = 'insert'
+    request_body['service'] = 'management'
+    request_body['action'] = 'sign_up'
 
     try:
         response = execute_request(request_body)
@@ -164,11 +169,12 @@ def sign_up():
         }
 
     except InvalidInput as e:
-        return {"is_successful": False, "error_description": str(e), "response": None}
+        return {"is_successful": False, "title": "Invalid Input", "error_description": str(e), "response": None}
     except InvalidFieldName as e:
-        return {"is_successful": False, "error_description": str(e), "response": None}
+        return {"is_successful": False, "title": "Invalid Field Name", "error_description": str(e), "response": None}
     except RequiredFieldError as e:
-        return {"is_successful": False, "error_description": str(e), "response": None}
+        return {"is_successful": False, "title": "Required Field Error", "error_description": str(e),
+                "response": None}
 
 
 @app.route('/api/v1/login', methods=['post'])
@@ -176,7 +182,7 @@ def login():
     request_body = request.json
     ip = request.remote_addr
 
-    request_body['table'] = 'management'
+    request_body['service'] = 'management'
     request_body['method'] = 'select'
     request_body['method_type'] = 'login'
 
@@ -193,8 +199,8 @@ def login():
             "response": response
         }
     except InvalidInput as e:
-        return {"is_successful": False, "error_description": str(e), "response": None}
+        return {"is_successful": False, "title": "Invalid Input", "error_description": str(e), "response": None}
     except InvalidFieldName as e:
-        return {"is_successful": False, "error_description": str(e), "response": None}
+        return {"is_successful": False, "title": "Invalid Field Name", "error_description": str(e), "response": None}
     except RequiredFieldError as e:
-        return {"is_successful": False, "error_description": str(e), "response": None}
+        return {"is_successful": False, "title": "Required Field Error", "error_description": str(e), "response": None}
