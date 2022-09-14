@@ -30,21 +30,21 @@ class UserWorkerWrapper(BaseServiceWrapper):
                 return self.user_delete_worker.serve_request(request)
 
         except AccountExists as e:
-            return {'is_successful': False, 'title': 'Account Exists', 'description': str(e)}
+            return {'is_successful': False, 'error': 'Account Exists', 'error_description': str(e)}
         except AccountNotFound as e:
-            return {'is_successful': False, 'title': 'Account not found', 'description': str(e)}
+            return {'is_successful': False, 'error': 'Account not found', 'error_description': str(e)}
         except InsufficientBalance as e:
-            return {'is_successful': False, 'title': 'Insufficient Balance', 'description': str(e)}
+            return {'is_successful': False, 'error': 'Insufficient Balance', 'error_description': str(e)}
         except UserNotFound as e:
-            return {'is_successful': False, 'title': 'User not found', 'description': str(e)}
+            return {'is_successful': False, 'error': 'User not found', 'error_description': str(e)}
         except InvalidFieldName as e:
-            return {'is_successful': False, 'title': 'Invalid Field Name', 'description': str(e)}
+            return {'is_successful': False, 'error': 'Invalid Field Name', 'error_description': str(e)}
         except RequiredFieldError as e:
-            return {'is_successful': False, 'title': 'Required Field Error', 'description': str(e)}
+            return {'is_successful': False, 'error': 'Required Field Error', 'error_description': str(e)}
         except AppException as e:
-            return {'is_successful': False, 'title': 'App Exception', 'description': str(e)}
+            return {'is_successful': False, 'error': 'App Exception', 'error_description': str(e)}
         except Exception as e:
-            return {'is_successful': False, 'title': 'Exception', 'description': str(e)}
+            return {'is_successful': False, 'error': 'Exception', 'error_description': str(e)}
 
 
 class UserSelectWorker(BaseWorker):

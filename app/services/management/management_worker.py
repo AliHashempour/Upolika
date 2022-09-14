@@ -30,23 +30,23 @@ class ManagementWorkerWrapper(BaseServiceWrapper):
                 return self.transaction_delete_worker.serve_request(request)
 
         except UserExists as e:
-            return {'is_successful': False, 'title': 'User Exists', 'description': str(e)}
+            return {'is_successful': False, 'error': 'User Exists', 'error_description': str(e)}
         except UserNotFound as e:
-            return {'is_successful': False, 'title': 'User not found', 'description': str(e)}
+            return {'is_successful': False, 'error': 'User not found', 'error_description': str(e)}
         except AccountExists as e:
-            return {'is_successful': False, 'title': 'Account Exists', 'description': str(e)}
+            return {'is_successful': False, 'error': 'Account Exists', 'error_description': str(e)}
         except AccountNotFound as e:
-            return {'is_successful': False, 'title': 'Account not found', 'description': str(e)}
+            return {'is_successful': False, 'error': 'Account not found', 'error_description': str(e)}
         except InvalidFieldName as e:
-            return {'is_successful': False, 'title': 'Invalid Field Name', 'description': str(e)}
+            return {'is_successful': False, 'error': 'Invalid Field Name', 'error_description': str(e)}
         except RequiredFieldError as e:
-            return {'is_successful': False, 'title': 'Required Field Error', 'description': str(e)}
+            return {'is_successful': False, 'error': 'Required Field Error', 'error_description': str(e)}
         except PermissionDenied as e:
-            return {'is_successful': False, 'title': 'Permission Denied', 'description': str(e)}
+            return {'is_successful': False, 'error': 'Permission Denied', 'error_description': str(e)}
         except AppException as e:
-            return {'is_successful': False, 'title': 'App Exception', 'description': str(e)}
+            return {'is_successful': False, 'error': 'App Exception', 'error_description': str(e)}
         except Exception as e:
-            return {'is_successful': False, 'title': 'Exception', 'description': str(e)}
+            return {'is_successful': False, 'error': 'Exception', 'error_description': str(e)}
 
 
 class ManagementSelectWorker(BaseWorker):
