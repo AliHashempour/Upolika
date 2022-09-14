@@ -42,7 +42,7 @@ class ManagementLogic(BaseLogic):
         if len(record) == 0:
             raise UserNotFound()
         else:
-            user_token = str(uuid.uuid4())  # todo set user token in redis in api
+            user_token = str(uuid.uuid4())
             message = {
                 'is_successful': True,
                 'message': 'User logged in successfully',
