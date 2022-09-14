@@ -1,7 +1,8 @@
 from flask import Flask, request
 from flask_cors import CORS
 import app.api.utils as utils
-from app.helpers import communication_helper
+from app.helpers import communication_helper, policy_helper
+from app.definitions.request_definition import request_schema
 from app.exceptions.api_exception import *
 
 app = Flask(__name__)
@@ -9,6 +10,7 @@ CORS(app)
 
 
 def execute_request(request_body):
+    policy_helper.check_schema(request_body, request_schema)
     permitted_methods = ['sign_up', 'login']
 
     if request_body['method'] not in permitted_methods:
@@ -27,6 +29,12 @@ def execute_request(request_body):
 def select_request():
     try:
         request_body = request.json
+
+        if request_body.get("method_type"):
+            method = request_body["method_type"]
+            if method.upper() in ["UPDATE", "INSERT", "DELETE"]:
+                raise MethodPermissionDenied()
+
         res = execute_request(request.json)
         return {
             "is_successful": True,
@@ -34,9 +42,16 @@ def select_request():
             "data": request_body['data'],
             "response": res
         }
-    except NotAuthorizedException as e:
+
+    except NotAuthorized as e:
         return {"is_successful": False, "error_description": str(e), "response": None}
-    except InvalidInputException as e:
+    except InvalidInput as e:
+        return {"is_successful": False, "error_description": str(e), "response": None}
+    except InvalidFieldName as e:
+        return {"is_successful": False, "error_description": str(e), "response": None}
+    except RequiredFieldError as e:
+        return {"is_successful": False, "error_description": str(e), "response": None}
+    except MethodPermissionDenied as e:
         return {"is_successful": False, "error_description": str(e), "response": None}
 
 
@@ -44,6 +59,12 @@ def select_request():
 def insert_request():
     try:
         request_body = request.json
+
+        if request_body.get("method_type"):
+            method = request_body["method_type"]
+            if method.upper() in ["SELECT", "UPDATE", "DELETE"]:
+                raise MethodPermissionDenied()
+
         res = execute_request(request.json)
         return {
             "is_successful": True,
@@ -51,9 +72,16 @@ def insert_request():
             "data": request_body['data'],
             "request": res
         }
-    except NotAuthorizedException as e:
+
+    except NotAuthorized as e:
         return {"is_successful": False, "error_description": str(e), "response": None}
-    except InvalidInputException as e:
+    except InvalidInput as e:
+        return {"is_successful": False, "error_description": str(e), "response": None}
+    except InvalidFieldName as e:
+        return {"is_successful": False, "error_description": str(e), "response": None}
+    except RequiredFieldError as e:
+        return {"is_successful": False, "error_description": str(e), "response": None}
+    except MethodPermissionDenied as e:
         return {"is_successful": False, "error_description": str(e), "response": None}
 
 
@@ -61,6 +89,12 @@ def insert_request():
 def update_request():
     try:
         request_body = request.json
+
+        if request_body.get("method_type"):
+            method = request_body["method_type"]
+            if method.upper() in ["SELECT", "INSERT", "DELETE"]:
+                raise MethodPermissionDenied()
+
         res = execute_request(request.json)
         return {
             "is_successful": True,
@@ -68,9 +102,16 @@ def update_request():
             "data": request_body['data'],
             "request": res
         }
-    except NotAuthorizedException as e:
+
+    except NotAuthorized as e:
         return {"is_successful": False, "error_description": str(e), "response": None}
-    except InvalidInputException as e:
+    except InvalidInput as e:
+        return {"is_successful": False, "error_description": str(e), "response": None}
+    except InvalidFieldName as e:
+        return {"is_successful": False, "error_description": str(e), "response": None}
+    except RequiredFieldError as e:
+        return {"is_successful": False, "error_description": str(e), "response": None}
+    except MethodPermissionDenied as e:
         return {"is_successful": False, "error_description": str(e), "response": None}
 
 
@@ -78,6 +119,12 @@ def update_request():
 def delete_request():
     try:
         request_body = request.json
+
+        if request_body.get("method_type"):
+            method = request_body["method_type"]
+            if method.upper() in ["SELECT", "INSERT", "UPDATE"]:
+                raise MethodPermissionDenied()
+
         res = execute_request(request.json)
         return {
             "is_successful": True,
@@ -85,9 +132,16 @@ def delete_request():
             "data": request_body['data'],
             "request": res
         }
-    except NotAuthorizedException as e:
+
+    except NotAuthorized as e:
         return {"is_successful": False, "error_description": str(e), "response": None}
-    except InvalidInputException as e:
+    except InvalidInput as e:
+        return {"is_successful": False, "error_description": str(e), "response": None}
+    except InvalidFieldName as e:
+        return {"is_successful": False, "error_description": str(e), "response": None}
+    except RequiredFieldError as e:
+        return {"is_successful": False, "error_description": str(e), "response": None}
+    except MethodPermissionDenied as e:
         return {"is_successful": False, "error_description": str(e), "response": None}
 
 
@@ -112,7 +166,11 @@ def sign_up():
             "response": response
         }
 
-    except InvalidInputException as e:
+    except InvalidInput as e:
+        return {"is_successful": False, "error_description": str(e), "response": None}
+    except InvalidFieldName as e:
+        return {"is_successful": False, "error_description": str(e), "response": None}
+    except RequiredFieldError as e:
         return {"is_successful": False, "error_description": str(e), "response": None}
 
 
@@ -133,5 +191,9 @@ def login():
             "data": data,
             "response": response
         }
-    except InvalidInputException as e:
+    except InvalidInput as e:
+        return {"is_successful": False, "error_description": str(e), "response": None}
+    except InvalidFieldName as e:
+        return {"is_successful": False, "error_description": str(e), "response": None}
+    except RequiredFieldError as e:
         return {"is_successful": False, "error_description": str(e), "response": None}
