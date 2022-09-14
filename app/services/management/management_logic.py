@@ -33,7 +33,7 @@ class ManagementLogic(BaseLogic):
 
     def login_user(self, request_body):
         data = request_body['data']
-        required_fields = ['username', 'password']
+        required_fields = ['national_id', 'password']
 
         check_schema(data, user_definition.user_schema, required_fields)
         processed_data = preprocess(data, user_definition.user_schema)
@@ -47,7 +47,7 @@ class ManagementLogic(BaseLogic):
                 'is_successful': True,
                 'message': 'User logged in successfully',
                 'token': user_token,
-                'user': record
+                'user': record[0]
             }
             return message
 
