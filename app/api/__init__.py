@@ -17,7 +17,7 @@ def execute_request(request_body):
     utils.check_tag(request_body)
 
     response = communication_helper.send_message(
-        table=request_body['table'],
+        service=request_body['service'],
         body=request_body)
 
     return response
@@ -94,6 +94,7 @@ def delete_request():
 @app.route('/api/v1/sign_up', methods=['post'])
 def sign_up():
     request_body = request.json
+    ip = request.remote_addr
     data = request_body['data']
     request_body['table'] = 'management'
     request_body['method'] = 'insert'
@@ -101,6 +102,8 @@ def sign_up():
 
     try:
         response = execute_request(request_body)
+        if response['is_successful']:
+            utils.cache_token(response['token'], ip)
 
         return {
             "is_successful": True,
