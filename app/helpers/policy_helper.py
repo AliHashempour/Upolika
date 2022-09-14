@@ -4,6 +4,7 @@ from app.helpers.config_helper import ConfigHelper
 
 def check_schema(data, schema, required_fields=None):
     invalid_field_name = None
+    # data_fields = set(data.keys())
 
     if required_fields is None:
         check_is_required(data, schema)
@@ -12,7 +13,7 @@ def check_schema(data, schema, required_fields=None):
             if key not in data.keys():
                 raise RequiredFieldError(key)
 
-        for field in data.keys():
+        for field in list(data.keys()).copy():
             if field not in required_fields:
                 del data[field]
 
@@ -55,8 +56,11 @@ def preprocess(data, schema):
     for field in data:
         if data[field] is None and field in schema.keys() and "_null_value" in schema[field].keys():
             data[field] = schema[field]["_null_value"]
-        if field in schema.keys() and "_type" in schema[field].keys():
+        if field in schema.keys() and "_type" in schema[field].keys() and schema[field]["_null_value"] is not None:
             data[field] = schema[field]["_type"](data[field])
+    for field in list(data.keys()).copy():
+        if data[field] is None:
+            del data[field]
 
     return data
 
