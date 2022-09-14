@@ -183,8 +183,8 @@ def login():
     ip = request.remote_addr
 
     request_body['service'] = 'management'
-    request_body['method'] = 'select'
-    request_body['method_type'] = 'login'
+    request_body['method_type'] = 'select'
+    request_body['action'] = 'login'
 
     try:
         response = execute_request(request_body)
