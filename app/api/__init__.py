@@ -45,15 +45,15 @@ def select_request():
         }
 
     except NotAuthorized as e:
-        return {"status_code": 500, "error": "Not Authorized", "error_description": str(e), "response": None}
+        return {"status_code": 401, "error": "Not Authorized", "error_description": str(e), "response": None}
     except InvalidInput as e:
-        return {"status_code": 500, "error": "Invalid Input", "error_description": str(e), "response": None}
+        return {"status_code": 400, "error": "Invalid Input", "error_description": str(e), "response": None}
     except InvalidFieldName as e:
-        return {"status_code": 500, "error": "Invalid Field Name", "error_description": str(e), "response": None}
+        return {"status_code": 400, "error": "Invalid Field Name", "error_description": str(e), "response": None}
     except RequiredFieldError as e:
-        return {"status_code": 500, "error": "Required Field Error", "error_description": str(e), "response": None}
+        return {"status_code": 400, "error": "Required Field Error", "error_description": str(e), "response": None}
     except MethodPermissionDenied as e:
-        return {"status_code": 500, "error": "Method Permission Denied", "error_description": str(e),
+        return {"status_code": 405, "error": "Method Permission Denied", "error_description": str(e),
                 "response": None}
 
 
@@ -76,15 +76,15 @@ def insert_request():
         }
 
     except NotAuthorized as e:
-        return {"status_code": 500, "error": "Not Authorized", "error_description": str(e), "response": None}
+        return {"status_code": 401, "error": "Not Authorized", "error_description": str(e), "response": None}
     except InvalidInput as e:
-        return {"status_code": 500, "error": "Invalid Input", "error_description": str(e), "response": None}
+        return {"status_code": 400, "error": "Invalid Input", "error_description": str(e), "response": None}
     except InvalidFieldName as e:
-        return {"status_code": 500, "error": "Invalid Field Name", "error_description": str(e), "response": None}
+        return {"status_code": 400, "error": "Invalid Field Name", "error_description": str(e), "response": None}
     except RequiredFieldError as e:
-        return {"status_code": 500, "error": "Required Field Error", "error_description": str(e), "response": None}
+        return {"status_code": 400, "error": "Required Field Error", "error_description": str(e), "response": None}
     except MethodPermissionDenied as e:
-        return {"status_code": 500, "error": "Method Permission Denied", "error_description": str(e),
+        return {"status_code": 405, "error": "Method Permission Denied", "error_description": str(e),
                 "response": None}
 
 
@@ -107,15 +107,15 @@ def update_request():
         }
 
     except NotAuthorized as e:
-        return {"status_code": 500, "error": "Not Authorized", "error_description": str(e), "response": None}
+        return {"status_code": 401, "error": "Not Authorized", "error_description": str(e), "response": None}
     except InvalidInput as e:
-        return {"status_code": 500, "error": "Invalid Input", "error_description": str(e), "response": None}
+        return {"status_code": 400, "error": "Invalid Input", "error_description": str(e), "response": None}
     except InvalidFieldName as e:
-        return {"status_code": 500, "error": "Invalid Field Name", "error_description": str(e), "response": None}
+        return {"status_code": 400, "error": "Invalid Field Name", "error_description": str(e), "response": None}
     except RequiredFieldError as e:
-        return {"status_code": 500, "error": "Required Field Error", "error_description": str(e), "response": None}
+        return {"status_code": 400, "error": "Required Field Error", "error_description": str(e), "response": None}
     except MethodPermissionDenied as e:
-        return {"status_code": 500, "error": "Method Permission Denied", "error_description": str(e),
+        return {"status_code": 405, "error": "Method Permission Denied", "error_description": str(e),
                 "response": None}
 
 
@@ -138,15 +138,15 @@ def delete_request():
         }
 
     except NotAuthorized as e:
-        return {"status_code": 500, "error": "Not Authorized", "error_description": str(e), "response": None}
+        return {"status_code": 401, "error": "Not Authorized", "error_description": str(e), "response": None}
     except InvalidInput as e:
-        return {"status_code": 500, "error": "Invalid Input", "error_description": str(e), "response": None}
+        return {"status_code": 400, "error": "Invalid Input", "error_description": str(e), "response": None}
     except InvalidFieldName as e:
-        return {"status_code": 500, "error": "Invalid Field Name", "error_description": str(e), "response": None}
+        return {"status_code": 400, "error": "Invalid Field Name", "error_description": str(e), "response": None}
     except RequiredFieldError as e:
-        return {"status_code": 500, "error": "Required Field Error", "error_description": str(e), "response": None}
+        return {"status_code": 400, "error": "Required Field Error", "error_description": str(e), "response": None}
     except MethodPermissionDenied as e:
-        return {"status_code": 500, "error": "Method Permission Denied", "error_description": str(e),
+        return {"status_code": 405, "error": "Method Permission Denied", "error_description": str(e),
                 "response": None}
 
 
@@ -169,11 +169,11 @@ def sign_up():
         }
 
     except InvalidInput as e:
-        return {"status_code": 500, "error": "Invalid Input", "error_description": str(e), "response": None}
+        return {"status_code": 400, "error": "Invalid Input", "error_description": str(e), "response": None}
     except InvalidFieldName as e:
-        return {"status_code": 500, "error": "Invalid Field Name", "error_description": str(e), "response": None}
+        return {"status_code": 400, "error": "Invalid Field Name", "error_description": str(e), "response": None}
     except RequiredFieldError as e:
-        return {"status_code": 500, "error": "Required Field Error", "error_description": str(e),
+        return {"status_code": 400, "error": "Required Field Error", "error_description": str(e),
                 "response": None}
 
 
@@ -199,8 +199,8 @@ def login():
             "response": response
         }
     except InvalidInput as e:
-        return {"status_code": 500, "error": "Invalid Input", "error_description": str(e), "response": None}
+        return {"status_code": 400, "error": "Invalid Input", "error_description": str(e), "response": None}
     except InvalidFieldName as e:
-        return {"status_code": 500, "error": "Invalid Field Name", "error_description": str(e), "response": None}
+        return {"status_code": 400, "error": "Invalid Field Name", "error_description": str(e), "response": None}
     except RequiredFieldError as e:
-        return {"status_code": 500, "error": "Required Field Error", "error_description": str(e), "response": None}
+        return {"status_code": 400, "error": "Required Field Error", "error_description": str(e), "response": None}
