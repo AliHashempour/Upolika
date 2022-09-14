@@ -37,9 +37,9 @@ class MongoWrapper(BaseMongoWrapper):
     def select(self, table_name: str, query: dict, sort: list = None):
         collection = self.get_collection(table_name)
         if sort is None:
-            res = collection.find(query)
+            res = collection.find(query, {'_id': 0})
         else:
-            res = collection.find(query).sort(sort[0], sort[1])
+            res = collection.find(query, {'_id': 0}).sort(sort[0], sort[1])
         return [*res]
 
     def update(self, table_name, query, doc):
