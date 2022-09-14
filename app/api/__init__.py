@@ -148,21 +148,18 @@ def delete_request():
 @app.route('/api/v1/sign_up', methods=['post'])
 def sign_up():
     request_body = request.json
-    ip = request.remote_addr
-    data = request_body['data']
+
     request_body['table'] = 'management'
     request_body['method'] = 'insert'
     request_body['method_type'] = 'sign_up'
 
     try:
         response = execute_request(request_body)
-        if response['is_successful']:
-            utils.cache_token(response['token'], ip)
 
         return {
             "is_successful": True,
             "error_description": None,
-            "data": data,
+            "data": request_body['data'],
             "response": response
         }
 
@@ -177,7 +174,8 @@ def sign_up():
 @app.route('/api/v1/login', methods=['post'])
 def login():
     request_body = request.json
-    data = request_body['data']
+    ip = request.remote_addr
+
     request_body['table'] = 'management'
     request_body['method'] = 'select'
     request_body['method_type'] = 'login'
@@ -185,10 +183,13 @@ def login():
     try:
         response = execute_request(request_body)
 
+        if response['is_successful']:
+            utils.cache_token(response['token'], ip)
+
         return {
             "is_successful": True,
             "error_description": None,
-            "data": data,
+            "data": request_body['data'],
             "response": response
         }
     except InvalidInput as e:
