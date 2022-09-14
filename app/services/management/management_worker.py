@@ -55,7 +55,7 @@ class ManagementSelectWorker(BaseWorker):
 
     def serve_request(self, request):
 
-        method = request["method"]
+        method = request["action"]
 
         if method == "login":
             return self.logic.login_user(request)
@@ -75,7 +75,7 @@ class ManagementInsertWorker(BaseWorker):
 
     def serve_request(self, request):
 
-        method = request["method"]
+        method = request["action"]
 
         if method == "sign_up":
             return self.logic.sign_up(request)
@@ -92,7 +92,7 @@ class ManagementUpdateWorker(BaseWorker):
         super(ManagementUpdateWorker, self).__init__(logic=logic)
 
     def serve_request(self, request):
-        method = request["method"]
+        method = request["action"]
 
         if method == "update_user":
             return self.logic.update_user(request)
@@ -106,7 +106,7 @@ class ManagementDeleteWorker(BaseWorker):
 
     def serve_request(self, request):
 
-        method = request["method"]
+        method = request["action"]
 
         if method == "delete_user":
             return self.logic.delete_user(request)
