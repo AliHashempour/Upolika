@@ -1,3 +1,5 @@
+import datetime
+
 from app.definitions import account_definition, transaction_definition
 from app.helpers.base_helpers import BaseLogic
 from app.helpers.config_helper import ConfigHelper
@@ -37,8 +39,10 @@ class AccountLogic(BaseLogic):
 
     def add_transaction(self, request_body):
         data = request_body['data']
+        check_role(request_body, for_admin=True)
         check_schema(data, transaction_definition.transaction_schema)
         processed_data = preprocess(data, transaction_definition.transaction_schema)
+        processed_data['transaction_date'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         account = self.mongo_wrapper.select(self.account_table_name,
                                             {'serial': processed_data['owner_account_serial']})

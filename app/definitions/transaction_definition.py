@@ -1,5 +1,3 @@
-import datetime
-
 transaction_schema = {
     "amount": {
         "_type": float,
@@ -18,7 +16,7 @@ transaction_schema = {
     },
     "transaction_date": {
         "_type": str,
-        "_null_value": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        "_null_value": None,
         'is_required': True
     }
 }
