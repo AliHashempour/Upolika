@@ -35,3 +35,21 @@ account_schema = {
         'is_required': False
     }
 }
+
+operation_schema = {
+    "amount": {
+        "_type": float,
+        "_null_value": 0.00,
+        'is_required': True
+    },
+    "serial": {
+        "_type": str,
+        "_null_value": None,
+        'is_required': True
+    },
+    "owner_national_id": {
+        "_type": str,
+        "_null_value": None,
+        'is_required': True
+    },
+}
