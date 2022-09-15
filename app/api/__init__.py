@@ -39,6 +39,8 @@ def select_request():
         res = execute_request(request.json)
         return {
             "status_code": 200,
+            "error": None,
+            "error_description": None,
             "response": res
         }
 
@@ -68,6 +70,8 @@ def insert_request():
         res = execute_request(request.json)
         return {
             "status_code": 200,
+            "error": None,
+            "error_description": None,
             "response": res
         }
 
@@ -126,6 +130,8 @@ def delete_request():
         res = execute_request(request.json)
         return {
             "status_code": 200,
+            "error": None,
+            "error_description": None,
             "response": res
         }
 
@@ -155,6 +161,8 @@ def sign_up():
 
         return {
             "status_code": 200,
+            "error": None,
+            "error_description": None,
             "response": response
         }
 
@@ -184,6 +192,8 @@ def login():
 
         return {
             "status_code": 200,
+            "error": None,
+            "error_description": None,
             "response": response
         }
     except InvalidInput as e:
