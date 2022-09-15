@@ -39,8 +39,6 @@ def select_request():
         res = execute_request(request.json)
         return {
             "status_code": 200,
-            "error_description": None,
-            "data": request_body['data'],
             "response": res
         }
 
@@ -70,9 +68,7 @@ def insert_request():
         res = execute_request(request.json)
         return {
             "status_code": 200,
-            "error_description": None,
-            "data": request_body['data'],
-            "request": res
+            "response": res
         }
 
     except NotAuthorized as e:
@@ -101,9 +97,7 @@ def update_request():
         res = execute_request(request.json)
         return {
             "status_code": 200,
-            "error_description": None,
-            "data": request_body['data'],
-            "request": res
+            "response": res
         }
 
     except NotAuthorized as e:
@@ -132,9 +126,7 @@ def delete_request():
         res = execute_request(request.json)
         return {
             "status_code": 200,
-            "error_description": None,
-            "data": request_body['data'],
-            "request": res
+            "response": res
         }
 
     except NotAuthorized as e:
@@ -163,8 +155,6 @@ def sign_up():
 
         return {
             "status_code": 200,
-            "error_description": None,
-            "data": request_body['data'],
             "response": response
         }
 
@@ -194,8 +184,6 @@ def login():
 
         return {
             "status_code": 200,
-            "error_description": None,
-            "data": request_body['data'],
             "response": response
         }
     except InvalidInput as e:
