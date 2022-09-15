@@ -4,10 +4,17 @@ from app.helpers.config_helper import ConfigHelper
 
 def check_schema(data, schema, required_fields=None):
     invalid_field_name = None
-    # data_fields = set(data.keys())
 
     if required_fields is None:
         check_is_required(data, schema)
+
+        for field in data.keys():
+            if field not in schema.keys():
+                invalid_field_name = field
+
+        if invalid_field_name is not None:
+            raise InvalidFieldName(invalid_field_name)
+
     else:
         for key in required_fields:
             if key not in data.keys():
@@ -16,13 +23,6 @@ def check_schema(data, schema, required_fields=None):
         for field in list(data.keys()).copy():
             if field not in required_fields:
                 del data[field]
-
-    for field in data.keys():
-        if field not in schema.keys():
-            invalid_field_name = field
-
-    if invalid_field_name is not None:
-        raise InvalidFieldName(invalid_field_name)
 
 
 def check_is_required(data, schema):
