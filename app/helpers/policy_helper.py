@@ -76,8 +76,8 @@ def check_role(request_body, for_admin=False):
     role_key = request_body['role_key']
 
     cfg_helper = ConfigHelper()
-    admin_key = cfg_helper.get('ROLES_KEY', 'ADMIN')
-    user_key = cfg_helper.get('ROLES_KEY', 'USER')
+    admin_key = cfg_helper.get('ROLES_KEY', 'admin_key')
+    user_key = cfg_helper.get('ROLES_KEY', 'user_key')
 
     if for_admin is True:
         if role_key != admin_key:
