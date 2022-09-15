@@ -178,7 +178,7 @@ class UserLogic(BaseLogic):
         account_transactions = account['transaction_list']
         transaction_record = {
             'amount': data['amount'],
-            'owner_account_serial': data['serial'],
+            'owner_account_serial': account['serial'],
             'transaction_type': transaction_type,
             'transaction_date': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
