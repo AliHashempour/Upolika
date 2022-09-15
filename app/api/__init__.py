@@ -55,6 +55,8 @@ def select_request():
     except MethodPermissionDenied as e:
         return {"status_code": 405, "error": "Method Permission Denied", "error_description": str(e),
                 "response": None}
+    except Exception as e:
+        return {"status_code": 500, "error": "Internal Server Error", "error_description": str(e), "response": None}
 
 
 @app.route('/api/v1/insert_request', methods=['post'])
@@ -86,6 +88,8 @@ def insert_request():
     except MethodPermissionDenied as e:
         return {"status_code": 405, "error": "Method Permission Denied", "error_description": str(e),
                 "response": None}
+    except Exception as e:
+        return {"status_code": 500, "error": "Internal Server Error", "error_description": str(e), "response": None}
 
 
 @app.route('/api/v1/update_request', methods=['post'])
@@ -115,6 +119,8 @@ def update_request():
     except MethodPermissionDenied as e:
         return {"status_code": 405, "error": "Method Permission Denied", "error_description": str(e),
                 "response": None}
+    except Exception as e:
+        return {"status_code": 500, "error": "Internal Server Error", "error_description": str(e), "response": None}
 
 
 @app.route('/api/v1/delete_request', methods=['post'])
@@ -146,6 +152,8 @@ def delete_request():
     except MethodPermissionDenied as e:
         return {"status_code": 405, "error": "Method Permission Denied", "error_description": str(e),
                 "response": None}
+    except Exception as e:
+        return {"status_code": 500, "error": "Internal Server Error", "error_description": str(e), "response": None}
 
 
 @app.route('/api/v1/sign_up', methods=['post'])
@@ -173,6 +181,8 @@ def sign_up():
     except RequiredFieldError as e:
         return {"status_code": 400, "error": "Required Field Error", "error_description": str(e),
                 "response": None}
+    except Exception as e:
+        return {"status_code": 500, "error": "Internal Server Error", "error_description": str(e), "response": None}
 
 
 @app.route('/api/v1/login', methods=['post'])
@@ -202,3 +212,5 @@ def login():
         return {"status_code": 400, "error": "Invalid Field Name", "error_description": str(e), "response": None}
     except RequiredFieldError as e:
         return {"status_code": 400, "error": "Required Field Error", "error_description": str(e), "response": None}
+    except Exception as e:
+        return {"status_code": 500, "error": "Internal Server Error", "error_description": str(e), "response": None}
