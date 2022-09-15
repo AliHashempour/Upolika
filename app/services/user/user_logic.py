@@ -1,4 +1,5 @@
 import datetime
+import uuid
 
 from app.helpers.base_helpers import BaseLogic
 from app.helpers.config_helper import ConfigHelper
@@ -20,6 +21,7 @@ class UserLogic(BaseLogic):
 
         check_schema(data, account_definition.account_schema)
         processed_data = preprocess(data, account_definition.account_schema)
+        processed_data['serial'] = str(uuid.uuid4())
 
         account_existence = self.mongo_wrapper.exists(self.account_table_name, processed_data)
         if account_existence:
@@ -35,7 +37,7 @@ class UserLogic(BaseLogic):
 
     def remove_account(self, request_body):
         data = request_body['data']
-        required_fields = ['owner_national_id', 'serial']
+        required_fields = ['serial', 'owner_first_name', 'owner_last_name']
         check_schema(data, account_definition.account_schema, required_fields)
 
         account = self.mongo_wrapper.select(self.account_table_name, data)
