@@ -9,8 +9,7 @@ def check_token(request_body):
     token = request_body["token"]
 
     redis_helper = RedisWrapper()
-    token_existence = redis_helper.exists(token)
-    if not token_existence:
+    if token is None or not redis_helper.exists(token):
         raise NotAuthorized()
 
 
