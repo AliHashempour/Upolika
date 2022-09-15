@@ -35,7 +35,7 @@ class AccountNotFound(AppException):
 
 class PermissionDenied(AppException):
     def __init__(self, role):
-        super(PermissionDenied, self).__init__("You have to be a {} to perform this action.".format(role))
+        super(PermissionDenied, self).__init__("You have to be a/an {} to perform this action.".format(role))
 
 
 class InsufficientBalance(AppException):
