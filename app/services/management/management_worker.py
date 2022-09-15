@@ -108,9 +108,9 @@ class ManagementDeleteWorker(BaseWorker):
 
         method = request["action"]
 
-        if method == "delete_user":
-            return self.logic.delete_user(request)
-        elif method == "delete_account":
-            return self.logic.delete_account(request)
+        if method == "remove_user":
+            return self.logic.remove_user(request)
+        elif method == "remove_account":
+            return self.logic.remove_account(request)
         else:
             raise InvalidFieldName('action')
