@@ -31,23 +31,6 @@ def check_is_required(data, schema):
             raise RequiredFieldError(key)
 
 
-def check_full_schema(data, schema):
-    schema_keys = set(schema.keys())
-
-    data_keys = set(data.keys())
-
-    extra_keys = data_keys - schema_keys
-    if len(extra_keys) > 0:
-        for k in list(extra_keys):
-            del data[k]
-
-    if len(schema_keys - data_keys) > 0:
-        for null_key in list(schema_keys - data_keys):
-            data[null_key] = None
-
-    return data
-
-
 def preprocess(data, schema):
     for field in schema.keys():
         if field not in data.keys():

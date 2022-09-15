@@ -174,10 +174,9 @@ class ManagementLogic(BaseLogic):
     def update_user(self, request_body):
         data = request_body['data']
         national_id = data['national_id']
+        del data['national_id']
 
         check_role(request_body, for_admin=True)
-        checked_data = check_full_schema(data, user_definition.user_schema)
-        preprocessed_data = preprocess(checked_data, user_definition.user_schema)
 
         user = self.mongo_wrapper.select(self.user_table_name, {'national_id': national_id})
         if len(user) == 0:
@@ -185,8 +184,7 @@ class ManagementLogic(BaseLogic):
         else:
             self.mongo_wrapper.update(self.user_table_name,
                                       {'national_id': national_id},
-                                      preprocessed_data)
-
+                                      data)
             message = {
                 'is_successful': True,
                 'message': 'User updated successfully',
