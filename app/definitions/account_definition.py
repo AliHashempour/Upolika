@@ -22,7 +22,7 @@ account_schema = {
     "serial": {
         "_type": str,
         "_null_value": None,
-        'is_required': True
+        'is_required': False
     },
     "balance": {
         "_type": float,
