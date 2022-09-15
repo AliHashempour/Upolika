@@ -38,7 +38,8 @@ class ManagementLogic(BaseLogic):
         check_schema(data, user_definition.user_schema, required_fields)
         processed_data = preprocess(data, user_definition.user_schema)
 
-        record = self.mongo_wrapper.select(self.user_table_name, processed_data)
+        record = self.mongo_wrapper.select(self.user_table_name, {'national_id': processed_data['national_id'],
+                                                                  'password': processed_data['password']})
         if len(record) == 0:
             raise UserNotFound()
         else:
@@ -58,7 +59,7 @@ class ManagementLogic(BaseLogic):
         check_schema(data, user_definition.user_schema)
         processed_data = preprocess(data, user_definition.user_schema)
 
-        user_existence = self.mongo_wrapper.exists(self.user_table_name, processed_data)
+        user_existence = self.mongo_wrapper.exists(self.user_table_name, {'national_id': processed_data['national_id']})
         if user_existence:
             raise UserExists()
         else:
@@ -106,7 +107,7 @@ class ManagementLogic(BaseLogic):
         check_role(request_body, for_admin=True)
         check_schema(data, account_definition.account_schema)
         processed_data = preprocess(data, account_definition.account_schema)
-
+        processed_data['serial'] = str(uuid.uuid4())
         account_existence = self.mongo_wrapper.exists(self.account_table_name, processed_data)
 
         if account_existence is True:
@@ -122,11 +123,13 @@ class ManagementLogic(BaseLogic):
 
     def remove_account(self, request_body):
         data = request_body['data']
-
+        required_fields = ['serial', 'owner_first_name', 'owner_last_name']
         check_role(request_body, for_admin=True)
-        check_schema(data, user_definition.user_schema)
+        check_schema(data, account_definition.account_schema, required_fields)
 
-        account = self.mongo_wrapper.select(self.account_table_name, data)
+        account = self.mongo_wrapper.select(self.account_table_name, {'serial': data['serial'],
+                                                                      'owner_first_name': data['owner_first_name'],
+                                                                      'owner_last_name': data['owner_last_name']})
         if len(account) == 0:
             raise AccountNotFound()
         else:
@@ -153,7 +156,7 @@ class ManagementLogic(BaseLogic):
 
     def find_account(self, request_body):
         data = request_body['data']
-        required_fields = ['serial_number']
+        required_fields = ['serial']
         check_role(request_body, for_admin=True)
         check_schema(data, account_definition.account_schema, required_fields)
 
@@ -173,8 +176,8 @@ class ManagementLogic(BaseLogic):
         national_id = data['national_id']
 
         check_role(request_body, for_admin=True)
-        check_schema(data, user_definition.user_schema)
-        preprocessed_data = preprocess(data, user_definition.user_schema)
+        checked_data = check_full_schema(data, user_definition.user_schema)
+        preprocessed_data = preprocess(checked_data, user_definition.user_schema)
 
         user = self.mongo_wrapper.select(self.user_table_name, {'national_id': national_id})
         if len(user) == 0:
