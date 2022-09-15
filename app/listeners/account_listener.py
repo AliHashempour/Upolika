@@ -8,6 +8,7 @@ if __name__ == "__main__":
     service_name = 'ACCOUNT'
 
     while True:
+        # noinspection PyBroadException
         try:
             cfg_helper = config_helper.ConfigHelper()
 
@@ -26,6 +27,8 @@ if __name__ == "__main__":
 
             else:
                 raise Exception("INVALID RABBIT TYPE")
+
+            print(f'Starting {service_name} service...')
             server.start_consuming()
         except Exception as e:
             # tb.print_tb(e.__traceback__)
