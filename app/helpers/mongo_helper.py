@@ -30,9 +30,10 @@ class MongoWrapper(BaseMongoWrapper):
         return collection
 
     def insert(self, table_name: str, record: dict):
+        data = record
         collection = self.get_collection(table_name)
-        res = collection.insert_one(record)
-        return str(res.inserted_id)
+        res = collection.insert_one(data)
+        return res.acknowledged
 
     def select(self, table_name: str, query: dict, sort: list = None):
         collection = self.get_collection(table_name)
