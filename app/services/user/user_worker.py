@@ -87,6 +87,8 @@ class UserUpdateWorker(BaseWorker):
             return self.logic.deposit(request)
         elif method == "withdraw":
             return self.logic.withdraw(request)
+        elif method == "transfer":
+            return self.logic.transfer(request)
         else:
             raise InvalidFieldName('action')
 
