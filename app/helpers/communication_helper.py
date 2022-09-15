@@ -29,7 +29,7 @@ def send_message(service, body):
 
     if service_exchange_type == 'rpc':
         response = send_rpc_message(rabbit_host, rabbit_port, service_queue_name, request_body)
-    else:
-        response = {}
 
-    return response
+        return response
+    else:
+        raise Exception("INVALID RABBIT TYPE")
