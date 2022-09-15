@@ -28,9 +28,9 @@ if __name__ == "__main__":
             else:
                 raise Exception("INVALID RABBIT TYPE")
 
-            print(f'Starting {service_name} service...')
+            print(f'Starting {service_name} service listener...')
             server.start_consuming()
         except Exception as e:
-            # tb.print_tb(e.__traceback__)
+            print(e)
+            print("Trying to restart the server...")
             time.sleep(10)
-            # print("Trying to restart the server...")
