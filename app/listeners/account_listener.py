@@ -1,3 +1,4 @@
+import logging
 import time
 
 from app.helpers import config_helper
@@ -6,6 +7,10 @@ from app.services.account.account_worker import AccountWorkerWrapper
 
 if __name__ == "__main__":
     service_name = 'ACCOUNT'
+    logging.basicConfig(
+        format='  %(message)s', level=logging.INFO
+    )
+    logger = logging.getLogger(__name__)
 
     while True:
         # noinspection PyBroadException
@@ -28,9 +33,9 @@ if __name__ == "__main__":
             else:
                 raise Exception("INVALID RABBIT TYPE")
 
-            print(f'Starting {service_name} service listener...')
+            logger.info(f'Starting {service_name} service listener...')
             server.start_consuming()
         except Exception as e:
-            print(e)
-            print("Trying to restart the server...")
+            logger.info(e)
+            logger.info("Trying to restart the server...")
             time.sleep(10)
