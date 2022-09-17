@@ -6,4 +6,4 @@ COPY . .
 
 RUN pip install -r requirements.txt
 
-CMD ["/bin/bash", "./start.sh"]
+CMD ["/bin/sh","-c", "./start.sh"]

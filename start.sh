@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # shellcheck disable=SC2155
 # shellcheck disable=SC2006
 export PYTHONPATH=`pwd`
