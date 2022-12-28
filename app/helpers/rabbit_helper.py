@@ -78,5 +78,3 @@ class RpcServer:
                          properties=pika.BasicProperties(correlation_id=props.correlation_id),
                          body=response)
         ch.basic_ack(delivery_tag=method.delivery_tag)
-        # print("replied message: ", response, ", callback_queue: ", props.reply_to, ", corr_id: ",
-        # props.correlation_id)
